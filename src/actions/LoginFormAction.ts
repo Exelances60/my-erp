@@ -43,11 +43,26 @@ export const LoginFormAction = async (
     });
   } catch (error: unknown) {
     if (error instanceof Error) {
-      return {
-        errors: {
-          _form: [error.message],
-        },
-      };
+      if (error.message === "Firebase: Error (auth/wrong-password).") {
+        return {
+          errors: {
+            _form: ["Şifreniz yanlış"],
+          },
+        };
+      }
+      if (error.message === "Firebase: Error (auth/invalid-credential).") {
+        return {
+          errors: {
+            _form: ["Bu email ile bir kullanıcı bulunamadı"],
+          },
+        };
+      } else {
+        return {
+          errors: {
+            _form: [error.message],
+          },
+        };
+      }
     } else {
       return {
         errors: {

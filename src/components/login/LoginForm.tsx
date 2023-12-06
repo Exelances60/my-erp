@@ -35,7 +35,12 @@ const LoginForm = () => {
           size="md"
           isRequired
         />
-        <ButtonForm>Giriş Yap</ButtonForm>
+        {formState.errors._form ? (
+          <div className="border rounded-md bg-red-200 p-2">
+            {formState.errors._form}
+          </div>
+        ) : null}
+        <ButtonForm color="success">Giriş Yap</ButtonForm>
       </form>
     </>
   );

@@ -1,4 +1,3 @@
-import { db } from "@/db";
 import React from "react";
 
 const DashBoard = async () => {

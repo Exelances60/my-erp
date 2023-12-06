@@ -1,7 +1,6 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { redirect } from "next/navigation";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_REACT_APP_API_KEY,
@@ -21,4 +20,9 @@ export const dataBase = getFirestore(app);
 export const signIn = async (email: string, password: string) => {
   "use server";
   return await signInWithEmailAndPassword(auth, email, password);
+};
+
+export const signOut = async () => {
+  "use server";
+  return await auth.signOut();
 };
