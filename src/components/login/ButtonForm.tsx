@@ -1,5 +1,7 @@
+"use client";
 import { Button } from "@nextui-org/react";
 import React from "react";
+import { useFormStatus } from "react-dom";
 
 type ButtonColor =
   | "danger"
@@ -17,9 +19,10 @@ const ButtonForm = ({
   children: React.ReactNode;
   color: ButtonColor;
 }) => {
+  const { pending } = useFormStatus();
   return (
     <>
-      <Button color={color} type="submit" variant="shadow">
+      <Button color={color} type="submit" isLoading={pending} variant="shadow">
         {children}
       </Button>
     </>

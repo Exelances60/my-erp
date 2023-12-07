@@ -3,6 +3,8 @@ import { signIn } from "@/utils/firebase-utils";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { cookies } from "next/headers";
+import { useUserStore } from "@/store/userStore";
+import { revalidatePath } from "next/cache";
 
 interface LoginFormState {
   errors: {
@@ -36,6 +38,7 @@ export const LoginFormAction = async (
     const response = await signIn(result.data.email, result.data.password);
     const token = await response.user.getIdToken();
     const time = 3 * 60 * 60 * 1000;
+
     await cookies().set("token", token, {
       secure: true,
       httpOnly: true,
@@ -71,5 +74,6 @@ export const LoginFormAction = async (
       };
     }
   }
+  revalidatePath("/dashboard");
   redirect("/dashboard");
 };

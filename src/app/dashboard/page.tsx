@@ -1,7 +1,14 @@
+import { Button } from "antd";
 import React from "react";
 
-const DashBoard = async () => {
-  return <div>DashBoard</div>;
+const DashBoard = () => {
+  return (
+    <div>
+      <Button type="primary" className="bg-blue-500">
+        Button
+      </Button>
+    </div>
+  );
 };
 
 export default DashBoard;
