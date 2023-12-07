@@ -1,8 +1,7 @@
 import React from "react";
 import ButtonForm from "../login/ButtonForm";
 import { signOutAction } from "@/actions/SignOutAction";
-import { LogoutOutlined } from "@ant-design/icons";
-
+import { LogoutIcon } from "@heroicons/react/outline";
 export const HeaderForm = ({
   size,
 
@@ -20,7 +19,11 @@ export const HeaderForm = ({
   return (
     <>
       <form action={signOutAction}>
-        <ButtonForm color={color} size={size} icon={<LogoutOutlined />}>
+        <ButtonForm
+          color={color}
+          size={size}
+          icon={<LogoutIcon className="w-5 h-5" />}
+        >
           Çıkış Yap
         </ButtonForm>
       </form>

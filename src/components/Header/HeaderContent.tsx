@@ -9,7 +9,7 @@ import {
   Popover,
 } from "@nextui-org/react";
 import Link from "next/link";
-import { UserOutlined } from "@ant-design/icons";
+import { UsersIcon } from "@heroicons/react/outline";
 import { HeaderForm } from "./HeaderForm";
 import { fetchUserType } from "@/db/queries/getUser";
 
@@ -52,7 +52,7 @@ const HeaderContent = ({ user }: HeaderContentProps) => {
                   className=" text-lg text-center w-full p-2 hover:bg-gray-100 rounded ease-in duration-300"
                 >
                   <div className="flex gap-2 items-center justify-center">
-                    <UserOutlined />
+                    <UsersIcon className="w-5 h-5" />
                     Profil
                   </div>
                 </Link>

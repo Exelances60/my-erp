@@ -8,7 +8,7 @@ export default function DashboardLayout({
   return (
     <>
       <Header />
-      <div className="w-full p-5 box-border min-h-screen overflow-y-auto bg-[#f9fafb]">
+      <div className="w-full p-5 box-border  overflow-y-auto bg-[#f9fafb]">
         {children}
       </div>
     </>

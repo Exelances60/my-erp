@@ -1,17 +1,13 @@
-import {
-  AreaChartOutlined,
-  UsergroupAddOutlined,
-  TeamOutlined,
-} from "@ant-design/icons";
+import { HomeIcon, UserGroupIcon, UsersIcon } from "@heroicons/react/outline";
 
 export const navMenuIcon = (icon: string) => {
   switch (icon) {
     case "AreaChartOutlined":
-      return <AreaChartOutlined className="text-xl" />;
+      return <HomeIcon className="w-5 h-5" />;
     case "UsergroupAddOutlined":
-      return <UsergroupAddOutlined className="text-xl" />;
+      return <UserGroupIcon className="w-5 h-5" />;
     case "TeamOutlined":
-      return <TeamOutlined className="text-xl" />;
+      return <UsersIcon className="w-5 h-5" />;
     default:
       return <></>;
   }

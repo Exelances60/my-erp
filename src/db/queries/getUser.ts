@@ -8,7 +8,6 @@ export type fetchUserType = User | null;
 
 export const fetchUser = cache(async (): Promise<fetchUserType> => {
   const uid = await cookies().get("uid");
-  console.log("fetchUser");
   try {
     return await db.user.findFirst({
       where: {

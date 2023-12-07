@@ -16,7 +16,7 @@ export default async function Header() {
   });
 
   return (
-    <Navbar className="border rounded shadow ">
+    <Navbar className="border rounded shadow w-full ">
       <HeaderContent user={user} />
       <NavbarMenu>
         {navMenu.map((item) => {
