@@ -18,7 +18,17 @@ model User {
   device    String?
   token     String? @unique 
   password  String
+  role      String
   photoUrl  String?
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt 
+}
+
+model NavMenu{
+  navid String @id @default(uuid())
+  key String @unique
+  title String
+  icon String
+  seeRoles String
+  url String
 }

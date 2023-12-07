@@ -5,6 +5,7 @@ import { z } from "zod";
 import { cookies } from "next/headers";
 import { useUserStore } from "@/store/userStore";
 import { revalidatePath } from "next/cache";
+import { db } from "@/db";
 
 interface LoginFormState {
   errors: {

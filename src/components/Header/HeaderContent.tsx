@@ -24,9 +24,15 @@ const HeaderContent = ({ user }: HeaderContentProps) => {
         <NavbarMenuToggle />
       </NavbarContent>
       <NavbarContent className="gap-4 hidden sm:flex" justify="center">
-        <NavbarItem>Dashboard</NavbarItem>
-        <NavbarItem>Çalışanlar</NavbarItem>
-        <NavbarItem>Üyeler</NavbarItem>
+        <NavbarItem>
+          <Link href="/">Panel</Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link href="/dashboard/employees">Çalışanlar</Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link href="/dashboard/members">Üyeler</Link>
+        </NavbarItem>
         <NavbarItem className="flex gap-2 items-center">
           <Popover placement="bottom-end">
             <PopoverTrigger>
@@ -37,18 +43,19 @@ const HeaderContent = ({ user }: HeaderContentProps) => {
               />
             </PopoverTrigger>
             <PopoverContent>
-              <div className="flex flex-col gap-2 w-56 items-center p-4 box-border">
-                <h3 className="text-md">{user?.name}</h3>
+              <div className="flex flex-col gap-2 w-56 items-center p-4 box-border ">
+                <h3 className="text-md hover:bg-gray-100 rounded ease-in duration-300 w-full text-center p-2">
+                  {user?.name}
+                </h3>
                 <Link
                   href="/dashboard/profile"
-                  className=" text-lg text-center w-full p-2"
+                  className=" text-lg text-center w-full p-2 hover:bg-gray-100 rounded ease-in duration-300"
                 >
                   <div className="flex gap-2 items-center justify-center">
                     <UserOutlined />
                     Profil
                   </div>
                 </Link>
-
                 <HeaderForm size="md" color="danger" />
               </div>
             </PopoverContent>
