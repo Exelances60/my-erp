@@ -1,17 +1,12 @@
 import React from "react";
-import {
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  Link,
-  NavbarMenuToggle,
-  NavbarMenu,
-  NavbarMenuItem,
-} from "@nextui-org/react";
+import { Navbar, Link, NavbarMenu, NavbarMenuItem } from "@nextui-org/react";
 import { HeaderForm } from "./HeaderForm";
+import { fetchUser } from "@/db/queries/getUser";
+import HeaderContent from "./HeaderContent";
 
-export default function Header() {
+export default async function Header() {
+  const user = await fetchUser();
+
   const menuItems = [
     "Profile",
     "Dashboard",
@@ -27,37 +22,7 @@ export default function Header() {
 
   return (
     <Navbar className="border rounded shadow">
-      <NavbarContent>
-        <NavbarMenuToggle />
-        <NavbarBrand>
-          <p className="font-bold text-inherit">ACME</p>
-        </NavbarBrand>
-      </NavbarContent>
-
-      <NavbarContent className="gap-4 hidden sm:flex" justify="center">
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Features
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link href="#" aria-current="page" color="warning">
-            Customers
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Integrations
-          </Link>
-        </NavbarItem>
-        <NavbarItem className=" lg:flex">
-          <Link href="#">Login</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <HeaderForm />
-        </NavbarItem>
-      </NavbarContent>
-
+      <HeaderContent user={user} />
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>

@@ -39,7 +39,7 @@ export const LoginFormAction = async (
     const token = await response.user.getIdToken();
     const time = 3 * 60 * 60 * 1000;
 
-    await cookies().set("token", token, {
+    await cookies().set("uid", response.user.uid, {
       secure: true,
       httpOnly: true,
       expires: new Date(Date.now() + time),

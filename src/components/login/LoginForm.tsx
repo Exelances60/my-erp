@@ -19,8 +19,8 @@ const LoginForm = () => {
           name="email"
           placeholder="Email"
           className="mt-2"
-          errorMessage={formState.errors.email}
-          isInvalid={!!formState.errors.email}
+          errorMessage={formState?.errors?.email}
+          isInvalid={!!formState?.errors?.email}
           isRequired
           size="md"
         />
@@ -28,16 +28,16 @@ const LoginForm = () => {
           label="Password"
           name="password"
           type="password"
-          errorMessage={formState.errors.password}
-          isInvalid={!!formState.errors.password}
+          errorMessage={formState?.errors?.password}
+          isInvalid={!!formState?.errors?.password}
           placeholder="Password"
           className="mt-2"
           size="md"
           isRequired
         />
-        {formState.errors._form ? (
+        {formState?.errors._form ? (
           <div className="border rounded-md bg-red-200 p-2">
-            {formState.errors._form}
+            {formState?.errors._form}
           </div>
         ) : null}
         <ButtonForm color="success">Giriş Yap</ButtonForm>

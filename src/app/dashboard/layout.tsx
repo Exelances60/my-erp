@@ -8,7 +8,9 @@ export default function DashboardLayout({
   return (
     <>
       <Header />
-      <div className="container  mx-auto">{children}</div>
+      <div className="w-full p-5 box-border min-h-screen overflow-y-auto bg-[#f9fafb]">
+        {children}
+      </div>
     </>
   );
 }
