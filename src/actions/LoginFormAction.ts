@@ -3,9 +3,7 @@ import { signIn } from "@/utils/firebase-utils";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { cookies } from "next/headers";
-import { useUserStore } from "@/store/userStore";
 import { revalidatePath } from "next/cache";
-import { db } from "@/db";
 
 interface LoginFormState {
   errors: {
@@ -22,11 +20,14 @@ const LoginFormSchema = z.object({
 
 export const LoginFormAction = async (
   formState: LoginFormState,
-  formData: FormData
+  formData: {
+    email: string;
+    password: string;
+  }
 ): Promise<LoginFormState> => {
   const result = LoginFormSchema.safeParse({
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
+    email: formData.email,
+    password: formData.password,
   });
 
   if (!result.success) {

@@ -1,6 +1,8 @@
 import React from "react";
 import { Card, Metric, Text, Flex, ProgressBar, Grid } from "@tremor/react";
 
+import DashboardCard from "./components/DashboardCard";
+
 const categories = [
   {
     title: "Satışlar",
@@ -18,6 +20,7 @@ const categories = [
     target: 5,
   },
 ];
+
 const DasboardContainer = () => {
   return (
     <>
@@ -37,6 +40,7 @@ const DasboardContainer = () => {
                 })`}</Text>
                 <Text>{item.target}</Text>
               </Flex>
+
               <ProgressBar value={Number(value.toFixed(2))} className="mt-2" />
             </Card>
           );
@@ -44,7 +48,12 @@ const DasboardContainer = () => {
       </Grid>
       <div className="mt-6">
         <Card>
-          <div className="h-[60vh]"></div>
+          <div className="h-[60vh] box-border">
+            <Text>Dashboard</Text>
+            <div className="w-[50%] h-full ">
+              <DashboardCard />
+            </div>
+          </div>
         </Card>
       </div>
     </>

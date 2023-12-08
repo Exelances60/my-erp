@@ -1,9 +1,11 @@
 "use client";
 import React from "react";
 import ButtonForm from "@/components/login/ButtonForm";
-import { Divider, Input } from "@nextui-org/react";
 import { useFormState } from "react-dom";
 import { LoginFormAction } from "@/actions/LoginFormAction";
+import { Input } from "antd";
+import { Form } from "antd";
+import { MailOutlined, LockOutlined } from "@ant-design/icons";
 
 const LoginForm = () => {
   const [formState, action] = useFormState(LoginFormAction, {
@@ -12,36 +14,96 @@ const LoginForm = () => {
   return (
     <>
       <h3 className="text-xl font-bold text-center ">Giriş Yap</h3>
-      <form className="flex flex-col gap-4" action={action}>
-        <Divider />
-        <Input
-          label="Email"
+      <Form
+        name="basic"
+        layout="vertical"
+        component={"form"}
+        initialValues={{ remember: true }}
+        onFinish={action}
+      >
+        <Form.Item
           name="email"
-          placeholder="Email"
-          className="mt-2"
-          errorMessage={formState?.errors?.email}
-          isInvalid={!!formState?.errors?.email}
-          isRequired
-          size="md"
-        />
-        <Input
-          label="Password"
+          validateStatus={formState?.errors?.email ? "error" : undefined}
+          help={formState?.errors?.email}
+          rules={[
+            { required: true, message: "Lütfen email adresinizi giriniz!" },
+          ]}
+        >
+          <Input
+            size="large"
+            prefix={
+              <MailOutlined
+                className="site-form-item-icon"
+                style={{ color: "gray" }}
+              />
+            }
+            placeholder="Email"
+          />
+        </Form.Item>
+
+        <Form.Item
           name="password"
-          type="password"
-          errorMessage={formState?.errors?.password}
-          isInvalid={!!formState?.errors?.password}
-          placeholder="Password"
-          className="mt-2"
-          size="md"
-          isRequired
+          validateStatus={formState?.errors?.password ? "error" : undefined}
+          help={formState?.errors?.password}
+          rules={[{ required: true, message: "Lütfen şifrenizi giriniz!" }]}
+        >
+          <Input.Password
+            size="large"
+            placeholder="Password"
+            prefix={
+              <LockOutlined
+                className="site-form-item-icon"
+                style={{ color: "red" }}
+              />
+            }
+          />
+        </Form.Item>
+        {formState?.errors._form ? (
+          <div className="border rounded-md bg-red-200 p-2 my-4">
+            {formState?.errors._form}
+          </div>
+        ) : null}
+        <Form.Item className="flex justify-center items-center">
+          <ButtonForm color="success" size="lg">
+            Giriş Yap
+          </ButtonForm>
+        </Form.Item>
+      </Form>
+
+      {/*   <form className="flex flex-col gap-4" action={action}>
+        <>------------------------------</>
+        <Input
+          name="email"
+          size="large"
+          className="mt-10"
+          placeholder="Email"
+          status={formState?.errors?.email ? "error" : undefined}
         />
+        {formState?.errors?.email ? (
+          <div className="border rounded-md bg-red-200 p-2">
+            {formState?.errors?.email}
+          </div>
+        ) : null}
+        <Input
+          name="password"
+          size="large"
+          type="password"
+          status={formState?.errors?.email ? "error" : undefined}
+          placeholder="Password"
+          className="mt-5"
+        />
+        {formState?.errors?.password ? (
+          <div className="border rounded-md bg-red-200 p-2">
+            {formState?.errors?.password}
+          </div>
+        ) : null}
         {formState?.errors._form ? (
           <div className="border rounded-md bg-red-200 p-2">
             {formState?.errors._form}
           </div>
         ) : null}
         <ButtonForm color="success">Giriş Yap</ButtonForm>
-      </form>
+      </form> */}
     </>
   );
 };

@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@nextui-org/react";
+import { Button } from "antd";
 import React from "react";
 import { useFormStatus } from "react-dom";
 
@@ -28,11 +28,12 @@ const ButtonForm = ({
     <>
       <Button
         color={color}
-        type="submit"
-        size={size}
-        isLoading={pending}
-        variant="shadow"
-        startContent={icon}
+        htmlType="submit"
+        type="primary"
+        size="large"
+        className="bg-blue-500 hover:bg-blue-700"
+        loading={pending}
+        icon={icon}
       >
         {children}
       </Button>

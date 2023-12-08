@@ -1,11 +1,9 @@
 /** @type {import('tailwindcss').Config} */
-const { nextui } = require("@nextui-org/react");
 
 module.exports = {
   content: [
     "./src/**/*.{js,ts,jsx,tsx}",
     "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     transparent: "transparent",
@@ -130,5 +128,5 @@ module.exports = {
     },
   ],
   darkMode: "class",
-  plugins: [require("@headlessui/tailwindcss"), nextui()],
+  plugins: [require("@headlessui/tailwindcss")],
 };
