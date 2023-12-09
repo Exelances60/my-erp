@@ -5,9 +5,10 @@ import { Button, Drawer } from "antd";
 interface DrawerProps {
   children: React.ReactNode;
   buttonName: string;
+  title: string;
 }
 
-const DrawerComponent = ({ children, buttonName }: DrawerProps) => {
+const DrawerComponent = ({ children, buttonName, title }: DrawerProps) => {
   const [open, setOpen] = useState(false);
 
   const showDrawer = () => {
@@ -23,7 +24,7 @@ const DrawerComponent = ({ children, buttonName }: DrawerProps) => {
       <Button type="primary" onClick={showDrawer}>
         {buttonName}
       </Button>
-      <Drawer title="Drawer" placement="right" onClose={onClose} open={open}>
+      <Drawer title={title} placement="right" onClose={onClose} open={open}>
         {children}
       </Drawer>
     </>
