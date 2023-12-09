@@ -23,10 +23,16 @@ const LoginForm = () => {
       >
         <Form.Item
           name="email"
+          hasFeedback
           validateStatus={formState?.errors?.email ? "error" : undefined}
           help={formState?.errors?.email}
+          validateDebounce={1000}
           rules={[
-            { required: true, message: "Lütfen email adresinizi giriniz!" },
+            {
+              required: true,
+              message: "Lütfen email adresinizi giriniz!",
+              type: "email",
+            },
           ]}
         >
           <Input
@@ -45,17 +51,23 @@ const LoginForm = () => {
           name="password"
           validateStatus={formState?.errors?.password ? "error" : undefined}
           help={formState?.errors?.password}
-          rules={[{ required: true, message: "Lütfen şifrenizi giriniz!" }]}
+          validateDebounce={1000}
+          hasFeedback
+          rules={[
+            {
+              required: true,
+              message: "Lütfen şifrenizi giriniz!",
+            },
+            {
+              min: 6,
+              message: "Şifreniz en az 6 karakter olmalıdır!",
+            },
+          ]}
         >
           <Input.Password
             size="large"
             placeholder="Password"
-            prefix={
-              <LockOutlined
-                className="site-form-item-icon"
-                style={{ color: "red" }}
-              />
-            }
+            prefix={<LockOutlined className="site-form-item-icon" />}
           />
         </Form.Item>
         {formState?.errors._form ? (
