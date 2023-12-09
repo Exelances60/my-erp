@@ -4,6 +4,7 @@ import { Card, Metric, Text, Flex, ProgressBar, Grid } from "@tremor/react";
 import DashboardCard from "./components/DashboardCard";
 import { db } from "@/db";
 import { cookies } from "next/headers";
+import DrawerComponent from "../Drawer";
 
 const categories = [
   {
@@ -57,8 +58,13 @@ const DasboardContainer = async () => {
       </Grid>
       <div className="mt-6">
         <Card>
-          <div className="box-border min-h-[60vh]">
+          <div className="box-border min-h-[60vh] flex gap-2">
             <div className="md:w-[50%] h-full">
+              <DrawerComponent buttonName="Kart Ekle">
+                <div className="flex justify-center items-center">
+                  <Text>Kart Ekle</Text>
+                </div>
+              </DrawerComponent>
               <Grid
                 numItemsSm={2}
                 numItemsLg={2}
@@ -71,6 +77,7 @@ const DasboardContainer = async () => {
                       icon={item.icon}
                       title={item.title}
                       uniqueKey={item.id}
+                      path={item.path}
                       detailsText={item.mainText}
                     />
                   );

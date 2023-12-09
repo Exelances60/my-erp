@@ -1,9 +1,8 @@
 "use server";
-
 import { db } from "@/db";
+import { revalidatePath } from "next/cache";
 
 export const DashboardCardAction = async (
-  title?: string,
   mainText?: string,
   uniqueKey?: string
 ) => {
@@ -15,4 +14,20 @@ export const DashboardCardAction = async (
       mainText,
     },
   });
+  revalidatePath("/dashboard");
+};
+
+export const DashboardCardTitleAction = async (
+  title?: string,
+  uniqueKey?: string
+) => {
+  await db.dashboardCard.update({
+    where: {
+      id: uniqueKey,
+    },
+    data: {
+      title,
+    },
+  });
+  revalidatePath("/dashboard");
 };
