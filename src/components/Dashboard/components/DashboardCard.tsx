@@ -1,16 +1,69 @@
-import React from "react";
-import { Card, Text, Grid, Title } from "@tremor/react";
-import { ShoppingBagIcon } from "@heroicons/react/outline";
+"use client";
+import React, { useState } from "react";
+import { Card, Title } from "@tremor/react";
+import {
+  ShoppingBagIcon,
+  UsersIcon,
+  AcademicCapIcon,
+  IdentificationIcon,
+  CreditCardIcon,
+} from "@heroicons/react/outline";
+import Paragraph from "antd/es/typography/Paragraph";
+import { selectUser, useUserStore } from "@/store/userStore";
+import { DashboardCardAction } from "@/actions/DashboardCardAction";
 
-const DashboardCard = () => {
+interface DashboardCardProps {
+  uniqueKey: string;
+  title?: string;
+  icon?: string;
+  detailsText?: string;
+}
+
+const DashboardCard = ({
+  title,
+  detailsText,
+  icon,
+  uniqueKey,
+}: DashboardCardProps) => {
+  const user = useUserStore(selectUser);
+  const [editableTextCard, setEditableTextCard] = useState(detailsText);
+  const handleChangeText = (value: string) => {
+    setEditableTextCard(value);
+    DashboardCardAction(title, value, uniqueKey);
+  };
+
+  const renderIcon = () => {
+    switch (icon) {
+      case "ShoppingBagIcon":
+        return <ShoppingBagIcon className="w-7 h-7" />;
+      case "UsersIcon":
+        return <UsersIcon className="w-7 h-7" />;
+      case "IdentificationIcon":
+        return <IdentificationIcon className="w-7 h-7" />;
+      case "CreditCardIcon":
+        return <CreditCardIcon className="w-7 h-7" />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <Grid numItemsSm={2} numItemsLg={2} className="gap-6 mt-3">
-      <Card>
-        <ShoppingBagIcon className="h-6 w-6 " />
-        <Title className="mt-6">Satışlar</Title>
-        <Text>Toplam Satışlar</Text>
-      </Card>
-    </Grid>
+    <Card>
+      {renderIcon()}
+      <Title className="mt-3">{title}</Title>
+      <Paragraph
+        editable={
+          user?.role === "admin"
+            ? {
+                onChange: handleChangeText,
+                tooltip: "Düzenle",
+              }
+            : false
+        }
+      >
+        {editableTextCard}
+      </Paragraph>
+    </Card>
   );
 };
 
