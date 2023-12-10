@@ -1,10 +1,13 @@
 import React from "react";
 import { Card, Metric, Text, Flex, ProgressBar, Grid } from "@tremor/react";
 import DashboardCard from "./components/DashboardCard";
-import { db } from "@/db";
-import { cookies } from "next/headers";
 import DrawerComponent from "../Drawer";
 import DashboardCardAdd from "./components/DashboardCardAdd";
+import { getDashboardCardData } from "@/db/queries/getDashboardCardData";
+import { fetchUser } from "@/db/queries/getUser";
+import { Button, Popover, message } from "antd";
+import { DashboardCardDelete } from "@/actions/DashboardCardDelete";
+import DashboardCardDeleteComponent from "./components/DashboardCardDelete";
 
 const categories = [
   {
@@ -25,12 +28,27 @@ const categories = [
 ];
 
 const DasboardContainer = async () => {
-  const userCokie = cookies().get("uid")?.value;
-  const dashboardCardData = await db.dashboardCard.findMany({
-    where: {
-      userUid: userCokie,
-    },
-  });
+  const dashboardCardFetch = getDashboardCardData();
+  const userFetch = fetchUser();
+  const [dashboardCardData, user] = await Promise.all([
+    dashboardCardFetch,
+    userFetch,
+  ]);
+
+  const deleteCardPopOver = (
+    <div className="flex flex-col  gap-2">
+      {dashboardCardData.map((item) => {
+        const deleteAction = DashboardCardDelete.bind(null, item.id);
+        return (
+          <DashboardCardDeleteComponent
+            key={item.id}
+            item={item}
+            deleteAction={deleteAction}
+          />
+        );
+      })}
+    </div>
+  );
 
   return (
     <>
@@ -60,9 +78,27 @@ const DasboardContainer = async () => {
         <Card>
           <div className="box-border min-h-[60vh] flex gap-2">
             <div className="md:w-[50%] h-full">
-              <DrawerComponent buttonName="Kart Ekle" title="Admin Kart Ekle">
-                <DashboardCardAdd />
-              </DrawerComponent>
+              <div className="flex gap-2">
+                {user?.role === "admin" ? (
+                  <>
+                    <DrawerComponent
+                      buttonName="Kart Ekle"
+                      title="Admin Kart Ekle"
+                    >
+                      <DashboardCardAdd />
+                    </DrawerComponent>
+                    <Popover
+                      content={deleteCardPopOver}
+                      placement="bottomRight"
+                      trigger={"click"}
+                    >
+                      <Button type="primary" danger>
+                        Kart Sil
+                      </Button>
+                    </Popover>
+                  </>
+                ) : null}
+              </div>
               <Grid
                 numItemsSm={2}
                 numItemsLg={2}

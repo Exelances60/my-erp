@@ -1,38 +1,10 @@
 "use client";
 import { DashboardCardAddAction } from "@/actions/DashboardCardAddAction";
 import ButtonForm from "@/components/login/ButtonForm";
-import {
-  ShoppingBagIcon,
-  UsersIcon,
-  IdentificationIcon,
-  CreditCardIcon,
-} from "@heroicons/react/outline";
+import { iconOptions } from "@/hooks/renderIcon";
 import { Form, Input, Select } from "antd";
 import React from "react";
 import { useFormState } from "react-dom";
-
-const iconOptions = [
-  {
-    label: "ShoppingBagIcon",
-    value: "ShoppingBagIcon",
-    icon: <ShoppingBagIcon className="w-7 h-7" />,
-  },
-  {
-    label: "UsersIcon",
-    value: "UsersIcon",
-    icon: <UsersIcon className="w-7 h-7" />,
-  },
-  {
-    label: "IdentificationIcon",
-    value: "IdentificationIcon",
-    icon: <IdentificationIcon className="w-7 h-7" />,
-  },
-  {
-    label: "CreditCardIcon",
-    value: "CreditCardIcon",
-    icon: <CreditCardIcon className="w-7 h-7" />,
-  },
-];
 
 const formItems = [
   {
@@ -59,7 +31,12 @@ const DashboardCardAdd = () => {
 
   return (
     <div className="flex flex-col justify-center items-center ">
-      <Form name="addDashboardCard" layout="vertical" onFinish={action}>
+      <Form
+        name="addDashboardCard"
+        layout="vertical"
+        size="large"
+        onFinish={action}
+      >
         {formItems.map((item) => (
           <Form.Item
             key={item.name}
@@ -88,6 +65,11 @@ const DashboardCardAdd = () => {
             )}
           />
         </Form.Item>
+        {formState?.errors._form ? (
+          <div className="border rounded-md bg-red-200 p-2 my-4">
+            {formState?.errors._form}
+          </div>
+        ) : null}
         <Form.Item className="flex justify-center items-center">
           <ButtonForm color="success" size="lg">
             Kart Ekle

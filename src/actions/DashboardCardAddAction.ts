@@ -36,13 +36,14 @@ export const DashboardCardAddAction = async (
     });
   } catch (error: any) {
     if (error.response) {
-      if (error.response.status === 422) {
-        return {
-          errors: error.response.data.errors,
-        };
-      }
+      return {
+        errors: {
+          _form: [error.response.data.message],
+        },
+      };
     }
   }
+
   revalidatePath("/dashboard");
   return {
     errors: {},

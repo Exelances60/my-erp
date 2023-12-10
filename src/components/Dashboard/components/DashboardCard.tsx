@@ -1,14 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { Card, Text, Title } from "@tremor/react";
-import {
-  ShoppingBagIcon,
-  UsersIcon,
-  IdentificationIcon,
-  CreditCardIcon,
-  ArrowRightIcon,
-} from "@heroicons/react/outline";
+import { ArrowRightIcon } from "@heroicons/react/outline";
 import Paragraph from "antd/es/typography/Paragraph";
+import { renderIcon } from "@/hooks/renderIcon";
 import { selectUser, useUserStore } from "@/store/userStore";
 import {
   DashboardCardAction,
@@ -45,25 +40,10 @@ const DashboardCard = ({
     DashboardCardAction(value, uniqueKey);
   };
 
-  const renderIcon = () => {
-    switch (icon) {
-      case "ShoppingBagIcon":
-        return <ShoppingBagIcon className="w-7 h-7" />;
-      case "UsersIcon":
-        return <UsersIcon className="w-7 h-7" />;
-      case "IdentificationIcon":
-        return <IdentificationIcon className="w-7 h-7" />;
-      case "CreditCardIcon":
-        return <CreditCardIcon className="w-7 h-7" />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <Card>
       <div className="flex justify-between items-center">
-        <Text>{renderIcon()}</Text>
+        <Text>{renderIcon(icon)}</Text>
       </div>
       <Paragraph
         className="flex items-center gap-1"
