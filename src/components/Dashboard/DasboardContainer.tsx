@@ -9,6 +9,7 @@ import { Button, Popover } from "antd";
 import { DashboardCardDelete } from "@/actions/DashboardCardDelete";
 import DashboardCardDeleteComponent from "./components/DashboardCardDelete";
 import { fetchMenuList } from "@/db/queries/getMenuList";
+import DashboardLeftContainer from "./components/DashboardLeftContainer";
 
 const categories = [
   {
@@ -79,47 +80,12 @@ const DasboardContainer = async () => {
       <div className="mt-6">
         <Card>
           <div className="box-border min-h-[60vh] flex gap-2">
-            <div className="md:w-[50%] h-full">
-              <div className="flex gap-2">
-                {user?.role === "admin" ? (
-                  <>
-                    <DrawerComponent
-                      buttonName="Kart Ekle"
-                      title="Admin Kart Ekle"
-                    >
-                      <DashboardCardAdd menuList={menuList} />
-                    </DrawerComponent>
-                    <Popover
-                      content={deleteCardPopOver}
-                      placement="bottomRight"
-                      trigger={"click"}
-                    >
-                      <Button type="primary" danger>
-                        Kart Sil
-                      </Button>
-                    </Popover>
-                  </>
-                ) : null}
-              </div>
-              <Grid
-                numItemsSm={2}
-                numItemsLg={2}
-                className="gap-6 mt-3 min-h-[60vh]"
-              >
-                {dashboardCardData.map((item) => {
-                  return (
-                    <DashboardCard
-                      key={item.id}
-                      icon={item.icon}
-                      title={item.title}
-                      uniqueKey={item.id}
-                      path={item.path}
-                      detailsText={item.mainText}
-                    />
-                  );
-                })}
-              </Grid>
-            </div>
+            <DashboardLeftContainer
+              user={user}
+              menuList={menuList}
+              deleteCardPopOver={deleteCardPopOver}
+              dashboardCardData={dashboardCardData}
+            />
           </div>
         </Card>
       </div>
