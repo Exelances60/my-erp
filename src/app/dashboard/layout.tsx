@@ -15,7 +15,6 @@ export default async function DashboardLayout({
       seeRoles: user?.role || "guest",
     },
   });
-  console.log(user);
   return (
     <>
       <StyledComponentsRegistry>
