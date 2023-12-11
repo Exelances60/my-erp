@@ -10,11 +10,14 @@ interface DashboardCardAddStateProps {
   };
 }
 export const DashboardCardAddAction = async (
+  value: string,
   formState: DashboardCardAddStateProps,
   formData: any
 ): Promise<DashboardCardAddStateProps> => {
-  const { title, mainText, path, icon } = formData;
+  const path = value;
+  const { title, mainText, icon } = formData;
   const userUid = cookies().get("uid")?.value;
+  console.log(path);
 
   if (!userUid) {
     return {

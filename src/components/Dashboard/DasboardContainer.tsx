@@ -5,9 +5,10 @@ import DrawerComponent from "../Drawer";
 import DashboardCardAdd from "./components/DashboardCardAdd";
 import { getDashboardCardData } from "@/db/queries/getDashboardCardData";
 import { fetchUser } from "@/db/queries/getUser";
-import { Button, Popover, message } from "antd";
+import { Button, Popover } from "antd";
 import { DashboardCardDelete } from "@/actions/DashboardCardDelete";
 import DashboardCardDeleteComponent from "./components/DashboardCardDelete";
+import { fetchMenuList } from "@/db/queries/getMenuList";
 
 const categories = [
   {
@@ -34,6 +35,7 @@ const DasboardContainer = async () => {
     dashboardCardFetch,
     userFetch,
   ]);
+  const menuList = await fetchMenuList(user?.role);
 
   const deleteCardPopOver = (
     <div className="flex flex-col  gap-2">
@@ -85,7 +87,7 @@ const DasboardContainer = async () => {
                       buttonName="Kart Ekle"
                       title="Admin Kart Ekle"
                     >
-                      <DashboardCardAdd />
+                      <DashboardCardAdd menuList={menuList} />
                     </DrawerComponent>
                     <Popover
                       content={deleteCardPopOver}

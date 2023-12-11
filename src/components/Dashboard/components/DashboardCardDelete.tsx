@@ -14,6 +14,13 @@ const DashboardCardDeleteComponent = ({
   item,
   deleteAction,
 }: DashboardCardDeleteProps) => {
+  const handleDelete = async () => {
+    message.loading({ content: "Deleting card...", key: "delete" });
+    const responseMessage = (await deleteAction()) as string | void;
+    if (responseMessage) {
+      message.success({ content: responseMessage, key: "delete" });
+    }
+  };
   return (
     <div key={item.id} className="flex w-full gap-2">
       {renderIcon(item.icon)}
@@ -21,8 +28,7 @@ const DashboardCardDeleteComponent = ({
         title="Bu kartı silmek istediğinize emin misiniz?"
         okType="danger"
         onConfirm={() => {
-          deleteAction();
-          message.loading("Kart silindi", 1);
+          handleDelete();
         }}
         okText="Evet"
         cancelText="Hayır"
