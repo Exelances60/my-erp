@@ -3,12 +3,12 @@ import React, { useEffect } from "react";
 import { Breadcrumb, Image, Layout, Menu } from "antd";
 import { fetchUserType } from "@/db/queries/getUser";
 import Link from "next/link";
-import { navMenuIcon } from "@/hooks/navIcon";
 import { selectSetUser, useUserStore } from "@/store/userStore";
 import { usePathname } from "next/navigation";
 import { HeaderForm } from "../Header/HeaderForm";
 import HeaderNav from "./HeaderNav";
 import { selectSetNavSider, useNavSiderStore } from "@/store/useNavSider";
+import { renderIcon } from "@/hooks/renderIcon";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -28,6 +28,7 @@ interface HeaderAntdProps {
 const HeaderAntd = ({ children, user, navMenu }: HeaderAntdProps) => {
   const setUser = useUserStore(selectSetUser);
   const setNavMenu = useNavSiderStore(selectSetNavSider);
+
   const currentPage = usePathname()
     .split("/")
     .filter((item) => item !== "")
@@ -72,7 +73,7 @@ const HeaderAntd = ({ children, user, navMenu }: HeaderAntdProps) => {
               return (
                 <Menu.Item
                   key={item.key}
-                  icon={navMenuIcon(item.icon)}
+                  icon={renderIcon(item.icon)}
                   className="flex"
                 >
                   <Link className="w-full  box-border" href={item.url}>
@@ -94,7 +95,7 @@ const HeaderAntd = ({ children, user, navMenu }: HeaderAntdProps) => {
             <HeaderNav user={user} />
           </Header>
           <Content style={{ margin: "0px 16px 0" }}>
-            <div className="w-full p-4 box-border overflow-y-auto mt-[14px] bg-[#f9fafb]">
+            <div className="w-full p-4 box-border min-h-[85vh] overflow-y-auto mt-[14px] bg-[#f9fafb]">
               <Breadcrumb
                 items={currentPage.map((item) => {
                   return {

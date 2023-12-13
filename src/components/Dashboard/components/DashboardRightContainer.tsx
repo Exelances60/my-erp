@@ -14,7 +14,7 @@ const DashboardRightContainer = () => {
 
   return (
     <div className="md:w-[50%] h-full box-border px-5 pt-10">
-      <Card className="w-full flex flex-col min-h-fit items-center justify-between  ">
+      <Card className="w-full flex flex-col items-center justify-between  ">
         <div className="flex flex-col">
           <span className="text-sm">Toplam Gelir</span>
           {chartdata.map((data, index) => {
@@ -39,9 +39,9 @@ const DashboardRightContainer = () => {
           showLegend={false}
         />
       </Card>
-      <Card className="w-full flex min-h-fit flex-col items-center justify-between mx-auto px-4 py-3.5 mt-5">
+      <Card className="w-full flex flex-col items-center justify-between mx-auto px-4 py-3.5 mt-5">
         <BarChart
-          className="h-52 min-h-[10vh]"
+          className="h-80 min-h-[10vh] lg:h-52"
           data={chartdata}
           categories={["target"]}
           index="month"
@@ -51,7 +51,6 @@ const DashboardRightContainer = () => {
           onValueChange={(value: EventProps) => setSelectChart(value)}
           showLegend={false}
         />
-        <pre>{JSON.stringify(selectChart)}</pre>
       </Card>
     </div>
   );

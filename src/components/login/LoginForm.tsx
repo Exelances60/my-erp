@@ -81,41 +81,6 @@ const LoginForm = () => {
           </ButtonForm>
         </Form.Item>
       </Form>
-
-      {/*   <form className="flex flex-col gap-4" action={action}>
-        <>------------------------------</>
-        <Input
-          name="email"
-          size="large"
-          className="mt-10"
-          placeholder="Email"
-          status={formState?.errors?.email ? "error" : undefined}
-        />
-        {formState?.errors?.email ? (
-          <div className="border rounded-md bg-red-200 p-2">
-            {formState?.errors?.email}
-          </div>
-        ) : null}
-        <Input
-          name="password"
-          size="large"
-          type="password"
-          status={formState?.errors?.email ? "error" : undefined}
-          placeholder="Password"
-          className="mt-5"
-        />
-        {formState?.errors?.password ? (
-          <div className="border rounded-md bg-red-200 p-2">
-            {formState?.errors?.password}
-          </div>
-        ) : null}
-        {formState?.errors._form ? (
-          <div className="border rounded-md bg-red-200 p-2">
-            {formState?.errors._form}
-          </div>
-        ) : null}
-        <ButtonForm color="success">Giriş Yap</ButtonForm>
-      </form> */}
     </>
   );
 };
