@@ -1,4 +1,8 @@
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
@@ -20,6 +24,11 @@ export const dataBase = getFirestore(app);
 export const signIn = async (email: string, password: string) => {
   "use server";
   return await signInWithEmailAndPassword(auth, email, password);
+};
+
+export const createUser = async (email: string, password: string) => {
+  "use server";
+  return await createUserWithEmailAndPassword(auth, email, password);
 };
 
 export const signOut = async () => {
