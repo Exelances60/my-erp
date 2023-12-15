@@ -56,7 +56,7 @@ const DasboardContainer = async () => {
 
       <div className="mt-6 ">
         <Card className="w-full flex min-h-fit ">
-          <div className="box-border min-h-[60vh] flex flex-col md:flex-row  gap-2">
+          <div className="box-border min-h-[60vh] w-full flex flex-col md:flex-row  gap-2">
             <DashboardLeftContainer
               user={user}
               menuList={menuList}

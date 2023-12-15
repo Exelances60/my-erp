@@ -20,10 +20,13 @@ export const CreateAddUser = async (
     email: string;
     name: string;
     password: string;
+    phone: string;
+    address: string;
+    photoUrl: string;
     role: string;
   }
 ): Promise<CreateAddUserState> => {
-  const { email, name, password, role } = formData;
+  const { email, name, password, role, address, phone, photoUrl } = formData;
   if (!email || !name || !password || !role) {
     return {
       stateManaget: {
@@ -45,9 +48,10 @@ export const CreateAddUser = async (
         token: token,
         password: password,
         role: role,
-        photoUrl: "",
+        photoUrl: photoUrl,
       },
     });
+
     revalidatePath("/dashboard/createUser");
     return {
       stateManaget: {

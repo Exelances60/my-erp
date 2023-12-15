@@ -43,7 +43,7 @@ export const NavMenuCreateAction = async (
         title,
         url,
         icon,
-        seeRoles,
+        seeRoles: `{${seeRoles}}`,
       },
     });
   } catch (error: unknown) {

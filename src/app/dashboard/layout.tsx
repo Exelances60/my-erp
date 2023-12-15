@@ -12,9 +12,12 @@ export default async function DashboardLayout({
 
   const navMenu = await db.navMenu.findMany({
     where: {
-      seeRoles: user?.role || "guest",
+      seeRoles: {
+        contains: user?.role,
+      },
     },
   });
+
   return (
     <>
       <StyledComponentsRegistry>

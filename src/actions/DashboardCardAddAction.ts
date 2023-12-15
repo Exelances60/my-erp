@@ -17,7 +17,6 @@ export const DashboardCardAddAction = async (
   const path = value;
   const { title, mainText, icon } = formData;
   const userUid = cookies().get("uid")?.value;
-  console.log(path);
 
   if (!userUid) {
     return {

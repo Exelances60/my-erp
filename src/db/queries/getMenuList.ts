@@ -12,7 +12,9 @@ export const fetchMenuList = cache(
     try {
       return await db.navMenu.findMany({
         where: {
-          seeRoles: userRole,
+          seeRoles: {
+            contains: userRole,
+          },
         },
       });
     } catch (error: any) {
