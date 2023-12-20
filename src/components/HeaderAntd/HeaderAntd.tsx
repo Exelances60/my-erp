@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { Breadcrumb, Image, Layout, Menu } from "antd";
 import { fetchUserType } from "@/db/queries/getUser";
 import Link from "next/link";
@@ -9,6 +9,7 @@ import { HeaderForm } from "../Header/HeaderForm";
 import HeaderNav from "./HeaderNav";
 import { selectSetNavSider, useNavSiderStore } from "@/store/useNavSider";
 import { renderIcon } from "@/hooks/renderIcon";
+import NotPermmisonPage from "../NotPermmisonPage";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -28,7 +29,6 @@ interface HeaderAntdProps {
 const HeaderAntd = ({ children, user, navMenu }: HeaderAntdProps) => {
   const setUser = useUserStore(selectSetUser);
   const setNavMenu = useNavSiderStore(selectSetNavSider);
-
   const currentPage = usePathname()
     .split("/")
     .filter((item) => item !== "")
@@ -42,6 +42,20 @@ const HeaderAntd = ({ children, user, navMenu }: HeaderAntdProps) => {
   useEffect(() => {
     setUser(user);
   }, [user, setUser]);
+  const permisson = navMenu.some(
+    (item) =>
+      item.navid === (children as ReactElement)?.props.initialChildNode[1]?.key
+  );
+
+  if (!permisson) {
+    return (
+      <NotPermmisonPage
+        status="403"
+        title="403"
+        subTitle="Bu sayfaya yetkiniz yoktur."
+      />
+    );
+  }
 
   return (
     <>

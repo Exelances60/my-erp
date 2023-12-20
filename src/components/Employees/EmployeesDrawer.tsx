@@ -4,6 +4,8 @@ import { Form, Input, Select, DatePicker, Row, Col } from "antd";
 import ButtonForm from "../login/ButtonForm";
 import { useFormState } from "react-dom";
 import { CreateEmployees } from "@/actions/CreateEmployees";
+import locale from "antd/es/date-picker/locale/tr_TR";
+
 const { Option } = Select;
 
 const EmployeesDrawer = () => {
@@ -63,9 +65,8 @@ const EmployeesDrawer = () => {
               help={formState?.errors?.Role}
               rules={[{ required: true, message: "Lütfen Rol Şeçin" }]}
             >
-              <Select placeholder="Please select an owner">
+              <Select placeholder="Lütfen Rol Şeçiniz">
                 <Option value="owner">Owner</Option>
-                <Option value="admin">Admin</Option>
                 <Option value="user">User</Option>
               </Select>
             </Form.Item>
@@ -86,13 +87,14 @@ const EmployeesDrawer = () => {
           <Col span={12}>
             <Form.Item
               name="dateTime"
-              label="DateTime"
-              rules={[
-                { required: true, message: "Please choose the dateTime" },
-              ]}
+              label="Sözleşme Bitiş Tarihi"
+              rules={[{ required: true, message: "Lütfen Tarih Giriniz" }]}
             >
-              <DatePicker.RangePicker
+              <DatePicker
                 style={{ width: "100%" }}
+                locale={locale}
+                placeholder="Lütfen Tarih Giriniz"
+                format={"DD/MM/YYYY"}
                 getPopupContainer={(trigger) => trigger.parentElement!}
               />
             </Form.Item>

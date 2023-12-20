@@ -1,5 +1,6 @@
 "use server";
 
+import { db } from "@/db";
 import { z } from "zod";
 
 interface IFormState {
@@ -42,7 +43,6 @@ export const CreateEmployees = async (
     Role: formData.Role,
     address: formData.address,
   });
-  console.log(result);
 
   if (!result.success) {
     return {
@@ -50,6 +50,11 @@ export const CreateEmployees = async (
     };
   }
 
+  /*   try {
+    await db.employee.create({
+
+  } catch (error: unknown) {}
+ */
   return {
     errors: {},
   };
