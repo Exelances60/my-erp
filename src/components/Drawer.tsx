@@ -7,6 +7,7 @@ interface DrawerProps {
   buttonName: string;
   title: string;
   danger?: boolean;
+  width?: number;
 }
 
 const DrawerComponent = ({
@@ -14,6 +15,7 @@ const DrawerComponent = ({
   buttonName,
   title,
   danger,
+  width,
 }: DrawerProps) => {
   const [open, setOpen] = useState(false);
 
@@ -30,7 +32,13 @@ const DrawerComponent = ({
       <Button type="primary" danger={danger} onClick={showDrawer}>
         {buttonName}
       </Button>
-      <Drawer title={title} placement="right" onClose={onClose} open={open}>
+      <Drawer
+        title={title}
+        placement="right"
+        onClose={onClose}
+        open={open}
+        width={width}
+      >
         {children}
       </Drawer>
     </>
