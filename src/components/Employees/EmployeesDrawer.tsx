@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import {
   Form,
   Input,
@@ -10,7 +10,6 @@ import {
   InputNumber,
   Upload,
   Button,
-  message,
 } from "antd";
 import ButtonForm from "../login/ButtonForm";
 import { useFormState } from "react-dom";
@@ -18,33 +17,20 @@ import { UploadOutlined } from "@ant-design/icons";
 import { CreateEmployees } from "@/actions/CreateEmployees";
 import locale from "antd/es/date-picker/locale/tr_TR";
 import "dayjs/locale/tr";
-import { UploadChangeParam, UploadFile } from "antd/es/upload";
+import { SuccesMessage } from "@/hooks/FormStateSuccesMessage";
+import FormatForImage from "@/hooks/FormatForImage";
 
 const { Option } = Select;
 
 const EmployeesDrawer = () => {
-  const [photoUrl, setPhotoUrl] = useState("");
+  const { formatForImage, photoUrl } = FormatForImage();
   const [formState, action] = useFormState(
     CreateEmployees.bind(null, photoUrl),
     {
       errors: {},
     }
   );
-
-  const formatForImage = (info: UploadChangeParam<UploadFile<any>>) => {
-    if (info.file.status === "done" && info.file.originFileObj) {
-      const reader = new FileReader();
-      reader.readAsDataURL(info.file.originFileObj);
-      reader.onload = () => {
-        setPhotoUrl(reader.result as string);
-      };
-    }
-  };
-
-  if (formState?.errors?.success) {
-    message.success("Başarıyla oluşturuldu", 1);
-    formState.errors.success = false;
-  }
+  SuccesMessage("Çalışan Başarıyla Eklendi", formState?.errors.success);
 
   return (
     <div>

@@ -1,9 +1,11 @@
 import DrawerComponent from "@/components/Drawer";
 import EmployeesContainer from "@/components/Employees/EmployeesContainer";
 import EmployeesDrawer from "@/components/Employees/EmployeesDrawer";
+import { getAllEmployees } from "@/db/queries/getAllEmployees";
 import React from "react";
 
-const Employees = () => {
+const Employees = async () => {
+  const { response: employees } = await getAllEmployees();
   return (
     <div
       className="h-[90vh] p-5 box-border"
@@ -18,7 +20,7 @@ const Employees = () => {
           <EmployeesDrawer />
         </DrawerComponent>
       </div>
-      <EmployeesContainer />
+      <EmployeesContainer employees={employees} />
     </div>
   );
 };

@@ -1,103 +1,145 @@
 "use client";
-import { Space, Tag } from "antd";
-import Table, { ColumnsType } from "antd/es/table";
-import Image from "next/image";
-import React from "react";
+import { Employee } from "@prisma/client";
+import { Table, Input, Space, Tag, Image, Popover } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
+import { ColumnsType } from "antd/es/table";
+import EmployeesActionPopover from "./EmployeesActionPopover";
 
-interface DataType {
-  key: string;
-  name: string;
-  address: string;
-  tags: string[];
-  email: string;
-  phone: string;
-  photoUrl: string;
-  role: string;
+interface IEmployeeContainerProps {
+  employees: Employee[];
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (text: string) => (
-      <div className="flex items-center gap-2">
-        <Image
-          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-          alt="Picture of the author"
-          width={30}
-          height={30}
-          quality={70}
-        />
-        <p>{text}</p>
-      </div>
-    ),
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
-    responsive: ["md"],
-  },
-  {
-    title: "Phone",
-    dataIndex: "phone",
-    key: "phone",
-    responsive: ["md"],
-  },
-  {
-    title: "Role",
-    key: "role",
-    dataIndex: "role",
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
-    responsive: ["md"],
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (text: string, record: { name: React.ReactNode }) => (
-      <Space size="middle">
-        <Tag color="error" className="cursor-pointer">
-          Action
+const EmployeesContainer = ({ employees }: IEmployeeContainerProps) => {
+  const [filterName, setFilterName] = useState<string>("");
+  const [selectedRowKeys, setSelectedRowKeys] = useState<Employee[]>([]);
+
+  const columns: ColumnsType<Employee> = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+      responsive: ["md"],
+      width: 50,
+      sorter: (a, b) => a.id - b.id,
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      width: 100,
+      filterDropdown: () => (
+        <div className="p-4">
+          <Input.Search
+            placeholder="Search name"
+            onChange={(e) => setFilterName(e.target.value)}
+            enterButton
+          />
+        </div>
+      ),
+      filteredValue: [filterName],
+      filterIcon: (filtered) => (
+        <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      ),
+      onFilter: (value, record) =>
+        String(record.name)
+          .toLowerCase()
+          .includes(value as string),
+      render: (text: string, { photoUrl }: Employee) => (
+        <div className="flex items-center gap-2">
+          <Image
+            src={photoUrl || "/images/placeholder.png"}
+            alt="Profile"
+            className="rounded-md"
+            width={40}
+            height={40}
+          />
+          <p className="mx-2">{text}</p>
+        </div>
+      ),
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      responsive: ["md"],
+      width: 100,
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone",
+      key: "phone",
+      width: 100,
+    },
+    {
+      title: "Role",
+      key: "role",
+      dataIndex: "role",
+      width: 100,
+      filters: [
+        { text: "Admin", value: "admin" },
+        { text: "User", value: "user" },
+      ],
+      responsive: ["lg"],
+      render: (value) => (
+        <Tag color="processing" className="text-base">
+          {value.toUpperCase()}
         </Tag>
-      </Space>
-    ),
-  },
-];
+      ),
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+      width: 200,
+      responsive: ["md"],
+    },
+    {
+      title: "Salary",
+      dataIndex: "salary",
+      key: "salary",
+      render: (value) => (
+        <div>
+          <Tag color="success">{value} &#8378;</Tag>
+        </div>
+      ),
+      responsive: ["md"],
+      width: 100,
+    },
+    {
+      width: 30,
+      title: "Action",
+      key: "action",
+      render: (text: string, value) => (
+        <Space size="middle">
+          <Popover
+            content={<EmployeesActionPopover value={value} />}
+            placement="topLeft"
+            title="Haraketler"
+          >
+            <Tag color="error" className="cursor-pointer">
+              Düzenle
+            </Tag>
+          </Popover>
+        </Space>
+      ),
+    },
+  ];
 
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "John Brown",
-    email: "asdasda@gmail.com",
-    phone: "123123123",
-    role: "Admin",
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-    photoUrl:
-      "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    email: "asdasd@gmail.com",
-    phone: "123123123",
-    role: "Admin",
-    address: "London No. 1 Lake Park",
-    tags: ["loser"],
-    photoUrl:
-      "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-  },
-];
-
-const EmployeesContainer = () => {
   return (
     <div>
-      <Table columns={columns} dataSource={data} />
+      <Table
+        rowSelection={{
+          type: "checkbox",
+          onChange(selectedRowKeys, selectedRows, info) {
+            setSelectedRowKeys(selectedRows);
+          },
+        }}
+        rowKey={(record) => record.id}
+        columns={columns}
+        dataSource={employees}
+        pagination={{ defaultPageSize: 15 }}
+      />
     </div>
   );
 };
