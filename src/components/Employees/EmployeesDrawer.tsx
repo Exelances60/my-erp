@@ -1,17 +1,51 @@
 "use client";
-import React from "react";
-import { Form, Input, Select, DatePicker, Row, Col } from "antd";
+import React, { useState } from "react";
+import {
+  Form,
+  Input,
+  Select,
+  DatePicker,
+  Row,
+  Col,
+  InputNumber,
+  Upload,
+  Button,
+  message,
+} from "antd";
 import ButtonForm from "../login/ButtonForm";
 import { useFormState } from "react-dom";
+import { UploadOutlined } from "@ant-design/icons";
 import { CreateEmployees } from "@/actions/CreateEmployees";
 import locale from "antd/es/date-picker/locale/tr_TR";
+import "dayjs/locale/tr";
+import { UploadChangeParam, UploadFile } from "antd/es/upload";
 
 const { Option } = Select;
 
 const EmployeesDrawer = () => {
-  const [formState, action] = useFormState(CreateEmployees, {
-    errors: {},
-  });
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [formState, action] = useFormState(
+    CreateEmployees.bind(null, photoUrl),
+    {
+      errors: {},
+    }
+  );
+
+  const formatForImage = (info: UploadChangeParam<UploadFile<any>>) => {
+    if (info.file.status === "done" && info.file.originFileObj) {
+      const reader = new FileReader();
+      reader.readAsDataURL(info.file.originFileObj);
+      reader.onload = () => {
+        setPhotoUrl(reader.result as string);
+      };
+    }
+  };
+
+  if (formState?.errors?.success) {
+    message.success("Başarıyla oluşturuldu", 1);
+    formState.errors.success = false;
+  }
+
   return (
     <div>
       <Form layout="vertical" requiredMark onFinish={action}>
@@ -43,7 +77,7 @@ const EmployeesDrawer = () => {
           <Col span={12}>
             <Form.Item
               name="phone"
-              label="Phone"
+              label="Telefon Numarası"
               validateStatus={formState?.errors?.phone ? "error" : undefined}
               help={formState?.errors?.phone}
               rules={[
@@ -76,7 +110,7 @@ const EmployeesDrawer = () => {
           <Col span={12}>
             <Form.Item
               name="address"
-              label="Address"
+              label="Adres"
               validateStatus={formState?.errors?.address ? "error" : undefined}
               help={formState?.errors?.address}
               rules={[{ required: true, message: "Adres Giriniz" }]}
@@ -100,9 +134,40 @@ const EmployeesDrawer = () => {
             </Form.Item>
           </Col>
         </Row>
+
         <Row gutter={16} className="w-full items-center justify-center">
-          <ButtonForm color="default">Kaydet</ButtonForm>
+          <Col span={12}>
+            <Form.Item
+              name="salary"
+              label="Maaş"
+              validateStatus={formState?.errors?.salary ? "error" : undefined}
+              help={formState?.errors?.salary}
+              rules={[{ required: true, message: "Maaş Giriniz" }]}
+            >
+              <InputNumber
+                addonBefore="+"
+                addonAfter="TL"
+                min={0}
+                defaultValue={100}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Upload
+              action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+              listType="picture"
+              onChange={formatForImage}
+            >
+              <Button icon={<UploadOutlined />}>
+                Bilgisayardan Resim Yükle
+              </Button>
+            </Upload>
+          </Col>
         </Row>
+        <ButtonForm color="default">Kaydet</ButtonForm>
+        <Button htmlType="reset" className="mt-5 ml-5">
+          Reset
+        </Button>
       </Form>
     </div>
   );

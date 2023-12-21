@@ -62,6 +62,7 @@ model Employee {
   photoUrl  String?
   userUid   String
   role      String
+  agreement String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt 
