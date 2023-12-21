@@ -44,7 +44,9 @@ const HeaderAntd = ({ children, user, navMenu }: HeaderAntdProps) => {
   }, [user, setUser]);
   const permisson = navMenu.some(
     (item) =>
-      item.navid === (children as ReactElement)?.props.initialChildNode[1]?.key
+      item.navid ===
+        (children as ReactElement).props.initialChildNode[1]?.key ||
+      item.key === (children as ReactElement).props.childPropSegment
   );
 
   if (!permisson) {
