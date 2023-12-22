@@ -7,10 +7,9 @@ import { SearchIcon, UserIcon } from "@heroicons/react/solid";
 import { selectNavSider, useNavSiderStore } from "@/store/useNavSider";
 import { HeaderForm } from "../Header/HeaderForm";
 import { Employee } from "@prisma/client";
-
 interface HeaderNavProps {
   user: fetchUserType;
-  employees: Employee[];
+  overAgreement: Employee[];
 }
 const userAvatarPopOverContent = (
   <>
@@ -24,11 +23,12 @@ const userAvatarPopOverContent = (
   </>
 );
 
-const HeaderNav = ({ user, employees }: HeaderNavProps) => {
+const HeaderNav = ({ user, overAgreement }: HeaderNavProps) => {
   const navSiderResponsive = useNavSiderStore(selectNavSider);
+
   const mailPopOverContent = (
     <div className="flex flex-col gap-2">
-      {employees.map((employee) => {
+      {overAgreement.map((employee) => {
         return (
           <div
             key={employee.id}
@@ -73,7 +73,7 @@ const HeaderNav = ({ user, employees }: HeaderNavProps) => {
         trigger="click"
         title="Sözleşmesi Biten Çalışanlar"
       >
-        <Badge count={employees.length} color="red">
+        <Badge count={overAgreement.length} color="red">
           <Icon
             icon={MailIcon}
             className="cursor-pointer"

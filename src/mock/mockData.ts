@@ -47,9 +47,4 @@ export const categories = [
     metric: 1600,
     target: 3000,
   },
-  {
-    title: "Personel Sayısı",
-    metric: 5,
-    target: 5,
-  },
 ];

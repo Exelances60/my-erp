@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Metric, Text, Flex, ProgressBar, Grid } from "@tremor/react";
+import { Card, Grid } from "@tremor/react";
 import { getDashboardCardData } from "@/db/queries/getDashboardCardData";
 import { fetchUser } from "@/db/queries/getUser";
 import { DashboardCardDelete } from "@/actions/DashboardAction/DashboardCardDelete";
@@ -7,8 +7,7 @@ import DashboardCardDeleteComponent from "./components/DashboardCardDelete";
 import { fetchMenuList } from "@/db/queries/getMenuList";
 import DashboardLeftContainer from "./components/DashboardLeftContainer";
 import DashboardRightContainer from "./components/DashboardRightContainer";
-import { categories } from "@/mock/mockData";
-import { calculatePercent } from "@/utils/calculatePercent";
+import DashboardShortCurtCard from "./DashboardShortCurtCard";
 
 const DasboardContainer = async () => {
   const dashboardCardFetch = getDashboardCardData();
@@ -37,23 +36,8 @@ const DasboardContainer = async () => {
   return (
     <>
       <Grid numItemsSm={3} numItemsLg={3} className="gap-6 mt-3">
-        {categories.map((item) => {
-          const value = calculatePercent(item.target, item.metric);
-          return (
-            <Card key={item.title}>
-              <Text>{item.title}</Text>
-              <Metric>{item.metric}</Metric>
-              <Flex className="mt-4">
-                <Text className="truncate">{`${value}% (${item.metric})`}</Text>
-                <Text>{item.target}</Text>
-              </Flex>
-
-              <ProgressBar value={Number(value)} className="mt-2" />
-            </Card>
-          );
-        })}
+        <DashboardShortCurtCard />
       </Grid>
-
       <div className="mt-6 ">
         <Card className="w-full flex min-h-fit ">
           <div className="box-border min-h-[60vh] w-full flex flex-col md:flex-row  gap-2">

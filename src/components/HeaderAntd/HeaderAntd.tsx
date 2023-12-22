@@ -18,14 +18,14 @@ interface HeaderAntdProps {
   children: React.ReactNode;
   user: fetchUserType;
   navMenu: NavMenu[];
-  employees: Employee[];
+  overAgreement: Employee[];
 }
 
 const HeaderAntd = ({
   children,
   user,
   navMenu,
-  employees,
+  overAgreement,
 }: HeaderAntdProps) => {
   const setUser = useUserStore(selectSetUser);
   const setNavMenu = useNavSiderStore(selectSetNavSider);
@@ -108,7 +108,7 @@ const HeaderAntd = ({
             style={{ padding: 0, backgroundColor: "#f9fafb" }}
             className="border  shadow"
           >
-            <HeaderNav user={user} employees={employees} />
+            <HeaderNav user={user} overAgreement={overAgreement} />
           </Header>
           <Content style={{ margin: "0px 16px 0" }}>
             <div className="w-full p-4 box-border min-h-[85vh] overflow-y-auto mt-[14px] bg-[#f9fafb]">

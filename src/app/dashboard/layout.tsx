@@ -14,7 +14,7 @@ export default async function DashboardLayout({
   const navMenuFetch = fetchMenuList(user?.role) || [];
   const employeesFetch = getAllEmployees();
 
-  const [navMenu, { overAgreement: employees }] = await Promise.all([
+  const [navMenu, { overAgreement }] = await Promise.all([
     navMenuFetch,
     employeesFetch,
   ]);
@@ -25,7 +25,7 @@ export default async function DashboardLayout({
         <HeaderAntd
           user={user}
           navMenu={navMenu as NavMenu[]}
-          employees={employees}
+          overAgreement={overAgreement}
         >
           {children}
         </HeaderAntd>
