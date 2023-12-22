@@ -1,6 +1,6 @@
 "use client";
 import { Employee } from "@prisma/client";
-import { Table, Input, Space, Tag, Image, Popover } from "antd";
+import { Table, Input, Space, Tag, Image, Popover, Tooltip } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/es/table";
@@ -100,7 +100,9 @@ const EmployeesContainer = ({ employees }: IEmployeeContainerProps) => {
       key: "salary",
       render: (value) => (
         <div>
-          <Tag color="success">{value} &#8378;</Tag>
+          <Tooltip placement="top" title={value}>
+            <Tag color="success">{value} &#8378;</Tag>
+          </Tooltip>
         </div>
       ),
       responsive: ["md"],

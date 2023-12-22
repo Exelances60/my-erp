@@ -3,7 +3,6 @@
 import { db } from "@/db";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-import { cache } from "react";
 import { z } from "zod";
 
 interface IFormState {
@@ -64,7 +63,10 @@ export const CreateEmployees = async (
         phone: phone,
         address: address,
         salary: Number(salary),
-        photoUrl: photoUrl,
+        photoUrl:
+          photoUrl === ""
+            ? "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
+            : photoUrl,
         agreement: dateTime,
         userUid: userUid || "",
         role: Role,
