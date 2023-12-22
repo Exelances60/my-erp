@@ -138,7 +138,7 @@ const EmployeesContainer = ({ employees }: IEmployeeContainerProps) => {
         rowKey={(record) => record.id}
         columns={columns}
         dataSource={employees}
-        pagination={{ defaultPageSize: 15 }}
+        pagination={{ defaultPageSize: 5 }}
       />
     </div>
   );

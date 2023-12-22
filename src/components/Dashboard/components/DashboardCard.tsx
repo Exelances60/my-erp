@@ -8,7 +8,7 @@ import { selectUser, useUserStore } from "@/store/userStore";
 import {
   DashboardCardAction,
   DashboardCardTitleAction,
-} from "@/actions/DashboardCardAction";
+} from "@/actions/DashboardAction/DashboardCardAction";
 import Link from "next/link";
 
 interface DashboardCardProps {

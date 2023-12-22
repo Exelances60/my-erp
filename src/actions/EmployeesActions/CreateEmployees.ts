@@ -18,7 +18,7 @@ interface IFormState {
     success?: boolean;
   };
 }
-interface IFormData {
+export interface IFormDataEmployees {
   name: string;
   email: string;
   phone: string;
@@ -39,7 +39,7 @@ const createEmployeesSchema = z.object({
 export const CreateEmployees = async (
   photoUrl: string,
   formState: IFormState,
-  formData: IFormData
+  formData: IFormDataEmployees
 ): Promise<IFormState> => {
   const userUid = cookies().get("uid")?.value;
   const result = createEmployeesSchema.safeParse({

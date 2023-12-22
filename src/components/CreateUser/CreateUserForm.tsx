@@ -1,10 +1,10 @@
 "use client";
-import { CreateAddUser } from "@/actions/CreateAddUser";
 import React from "react";
 import { useFormState } from "react-dom";
 import { Button, Form, Input, Select, message } from "antd";
 import { renderIcon } from "@/hooks/renderIcon";
 import ButtonForm from "../login/ButtonForm";
+import { CreateAddUser } from "@/actions/CreateUser/CreateAddUser";
 
 const CreateUserForm = () => {
   const [formState, action] = useFormState(CreateAddUser, {

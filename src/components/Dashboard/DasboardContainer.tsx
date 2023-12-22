@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Metric, Text, Flex, ProgressBar, Grid } from "@tremor/react";
 import { getDashboardCardData } from "@/db/queries/getDashboardCardData";
 import { fetchUser } from "@/db/queries/getUser";
-import { DashboardCardDelete } from "@/actions/DashboardCardDelete";
+import { DashboardCardDelete } from "@/actions/DashboardAction/DashboardCardDelete";
 import DashboardCardDeleteComponent from "./components/DashboardCardDelete";
 import { fetchMenuList } from "@/db/queries/getMenuList";
 import DashboardLeftContainer from "./components/DashboardLeftContainer";

@@ -1,5 +1,8 @@
-"use client";
 import React from "react";
+import ButtonForm from "../login/ButtonForm";
+import dayjs from "dayjs";
+import locale from "antd/es/date-picker/locale/tr_TR";
+import "dayjs/locale/tr";
 import {
   Form,
   Input,
@@ -11,37 +14,39 @@ import {
   Upload,
   Button,
 } from "antd";
-import ButtonForm from "../login/ButtonForm";
-import { useFormState } from "react-dom";
 import { UploadOutlined } from "@ant-design/icons";
-import locale from "antd/es/date-picker/locale/tr_TR";
-import "dayjs/locale/tr";
-import { SuccesMessage } from "@/hooks/FormStateSuccesMessage";
 import FormatForImage from "@/hooks/FormatForImage";
-import { CreateEmployees } from "@/actions/EmployeesActions/CreateEmployees";
+import { Employee } from "@prisma/client";
+import { UpdateEmployees } from "@/actions/EmployeesActions/UpdateEmployees";
 
 const { Option } = Select;
 
-const EmployeesDrawer = () => {
-  const { formatForImage, photoUrl } = FormatForImage();
-  const [formState, action] = useFormState(
-    CreateEmployees.bind(null, photoUrl),
-    {
-      errors: {},
-    }
-  );
-  SuccesMessage("Çalışan Başarıyla Eklendi", formState?.errors.success);
+interface IEmployeeActionPopoverProps {
+  value: Employee;
+}
 
+const EmployeesPopoverForm = ({ value }: IEmployeeActionPopoverProps) => {
+  const { formatForImage, photoUrl } = FormatForImage();
   return (
-    <div>
-      <Form layout="vertical" requiredMark onFinish={action}>
+    <>
+      <Form
+        layout="vertical"
+        requiredMark
+        initialValues={{
+          name: value.name,
+          email: value.email,
+          phone: value.phone,
+          Role: value.role,
+          address: value.address,
+          salary: value.salary,
+        }}
+        onFinish={UpdateEmployees.bind(null, value.id, photoUrl)}
+      >
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
               name="name"
               label="Name"
-              validateStatus={formState?.errors?.name ? "error" : undefined}
-              help={formState?.errors?.name}
               rules={[{ required: true, message: "Lütfen isim giriniz" }]}
             >
               <Input placeholder="İsim giriniz" />
@@ -51,8 +56,6 @@ const EmployeesDrawer = () => {
             <Form.Item
               name="email"
               label="Email"
-              validateStatus={formState?.errors?.email ? "error" : undefined}
-              help={formState?.errors?.email}
               rules={[{ required: true, message: "Mail Giriniz" }]}
             >
               <Input placeholder="Mail Giriniz" />
@@ -64,10 +67,11 @@ const EmployeesDrawer = () => {
             <Form.Item
               name="phone"
               label="Telefon Numarası"
-              validateStatus={formState?.errors?.phone ? "error" : undefined}
-              help={formState?.errors?.phone}
               rules={[
-                { required: true, message: "Lütfen Telefon Numarası Giriniz" },
+                {
+                  required: true,
+                  message: "Lütfen Telefon Numarası Giriniz",
+                },
               ]}
             >
               <Input
@@ -81,8 +85,6 @@ const EmployeesDrawer = () => {
             <Form.Item
               name="Role"
               label="Role"
-              validateStatus={formState?.errors?.Role ? "error" : undefined}
-              help={formState?.errors?.Role}
               rules={[{ required: true, message: "Lütfen Rol Şeçin" }]}
             >
               <Select placeholder="Lütfen Rol Şeçiniz">
@@ -97,8 +99,6 @@ const EmployeesDrawer = () => {
             <Form.Item
               name="address"
               label="Adres"
-              validateStatus={formState?.errors?.address ? "error" : undefined}
-              help={formState?.errors?.address}
               rules={[{ required: true, message: "Adres Giriniz" }]}
             >
               <Input placeholder="Adres Giriniz" />
@@ -115,6 +115,7 @@ const EmployeesDrawer = () => {
                 locale={locale}
                 placeholder="Lütfen Tarih Giriniz"
                 format={"DD/MM/YYYY"}
+                defaultValue={dayjs(value.agreement).locale("tr")}
                 getPopupContainer={(trigger) => trigger.parentElement!}
               />
             </Form.Item>
@@ -126,8 +127,6 @@ const EmployeesDrawer = () => {
             <Form.Item
               name="salary"
               label="Maaş"
-              validateStatus={formState?.errors?.salary ? "error" : undefined}
-              help={formState?.errors?.salary}
               rules={[{ required: true, message: "Maaş Giriniz" }]}
             >
               <InputNumber
@@ -150,13 +149,10 @@ const EmployeesDrawer = () => {
             </Upload>
           </Col>
         </Row>
-        <ButtonForm color="default">Kaydet</ButtonForm>
-        <Button htmlType="reset" className="mt-5 ml-5">
-          Reset
-        </Button>
+        <ButtonForm color="default">Güncelle</ButtonForm>
       </Form>
-    </div>
+    </>
   );
 };
 
-export default EmployeesDrawer;
+export default EmployeesPopoverForm;
