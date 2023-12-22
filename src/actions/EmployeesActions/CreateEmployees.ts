@@ -3,6 +3,7 @@
 import { db } from "@/db";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import { cache } from "react";
 import { z } from "zod";
 
 interface IFormState {
@@ -31,7 +32,6 @@ export interface IFormDataEmployees {
 const createEmployeesSchema = z.object({
   name: z.string().min(2, { message: "2 Karakterden fazla olmalı" }).max(255),
   email: z.string().email(),
-  phone: z.string().min(10, { message: "10 haneli olmalı" }).max(10),
   Role: z.string().min(2).max(255),
   address: z.string().min(2).max(255),
 });
@@ -45,7 +45,6 @@ export const CreateEmployees = async (
   const result = createEmployeesSchema.safeParse({
     name: formData.name,
     email: formData.email,
-    phone: formData.phone,
     Role: formData.Role,
     address: formData.address,
   });

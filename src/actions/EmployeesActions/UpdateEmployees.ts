@@ -15,7 +15,7 @@ export const UpdateEmployees = async (
   if (!photoUrl) {
     try {
       console.log("no photo");
-      return await db.employee.update({
+      await db.employee.update({
         where: {
           id: id,
         },
@@ -23,16 +23,20 @@ export const UpdateEmployees = async (
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
+          salary: Number(formData.salary),
           address: formData.address,
           role: formData.Role,
         },
       });
+      revalidatePath("/dashboard/employees");
+      return { status: 200 };
     } catch (error: any) {
       throw new Error(error);
     }
   }
 
   try {
+    console.log("photo");
     await db.employee.update({
       where: {
         id: id,
@@ -41,11 +45,14 @@ export const UpdateEmployees = async (
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
+        photoUrl: photoUrl,
+        salary: Number(formData.salary),
         address: formData.address,
         role: formData.Role,
       },
     });
     revalidatePath("/dashboard/employees");
+    return { status: 200 };
   } catch (error: any) {
     throw new Error(error);
   }

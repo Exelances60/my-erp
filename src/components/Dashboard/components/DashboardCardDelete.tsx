@@ -15,10 +15,10 @@ const DashboardCardDeleteComponent = ({
   deleteAction,
 }: DashboardCardDeleteProps) => {
   const handleDelete = async () => {
-    message.loading({ content: "Deleting card...", key: "delete" });
+    message.loading({ content: "Deleting card...", key: "delete" }, 1);
     const responseMessage = (await deleteAction()) as string | void;
     if (responseMessage) {
-      message.success({ content: responseMessage, key: "delete" });
+      message.success({ content: responseMessage, key: "delete" }, 2);
     }
   };
   return (

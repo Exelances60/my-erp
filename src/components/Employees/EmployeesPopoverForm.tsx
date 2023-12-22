@@ -13,6 +13,7 @@ import {
   InputNumber,
   Upload,
   Button,
+  message,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import FormatForImage from "@/hooks/FormatForImage";
@@ -27,6 +28,12 @@ interface IEmployeeActionPopoverProps {
 
 const EmployeesPopoverForm = ({ value }: IEmployeeActionPopoverProps) => {
   const { formatForImage, photoUrl } = FormatForImage();
+  const onFinishFunc = async (payload: any) => {
+    const response = await UpdateEmployees(value.id, photoUrl, payload);
+    if (response?.status === 200) {
+      return message.success("Çalışan Güncellendi", 1);
+    }
+  };
   return (
     <>
       <Form
@@ -40,7 +47,7 @@ const EmployeesPopoverForm = ({ value }: IEmployeeActionPopoverProps) => {
           address: value.address,
           salary: value.salary,
         }}
-        onFinish={UpdateEmployees.bind(null, value.id, photoUrl)}
+        onFinish={onFinishFunc}
       >
         <Row gutter={16}>
           <Col span={12}>

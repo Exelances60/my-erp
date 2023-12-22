@@ -6,20 +6,12 @@ import { fetchUserType } from "@/db/queries/getUser";
 import { SearchIcon, UserIcon } from "@heroicons/react/solid";
 import { selectNavSider, useNavSiderStore } from "@/store/useNavSider";
 import { HeaderForm } from "../Header/HeaderForm";
+import { Employee } from "@prisma/client";
 
 interface HeaderNavProps {
   user: fetchUserType;
+  employees: Employee[];
 }
-
-const mailPopOverContent = (
-  <div className="flex flex-col gap-2">
-    <p className="text-gray-500  font-semibold">Bildirimler</p>
-    <p className="text-gray-500  font-semibold">Bildirimler</p>
-    <p className="text-gray-500  font-semibold">Bildirimler</p>
-    <p className="text-gray-500  font-semibold">Bildirimler</p>
-  </div>
-);
-
 const userAvatarPopOverContent = (
   <>
     <div className="flex flex-col items-center gap-5 p-3 w-50 box-border">
@@ -32,8 +24,33 @@ const userAvatarPopOverContent = (
   </>
 );
 
-const HeaderNav = ({ user }: HeaderNavProps) => {
+const HeaderNav = ({ user, employees }: HeaderNavProps) => {
   const navSiderResponsive = useNavSiderStore(selectNavSider);
+  const mailPopOverContent = (
+    <div className="flex flex-col gap-2">
+      {employees.map((employee) => {
+        return (
+          <div
+            key={employee.id}
+            className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer"
+          >
+            <Avatar
+              size={45}
+              className="cursor-pointer"
+              src={employee.photoUrl}
+            />
+            <div className="flex flex-col">
+              <h3 className="text-gray-500 text-lg font-semibold">
+                {employee.name}
+              </h3>
+              <p className="text-red-300">Sözleşmesi Bitmiş</p>
+              <p className="text-gray-500 text-sm">{employee.email}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
   return (
     <div className="flex items-center h-full gap-2 justify-end px-5 ">
       {!navSiderResponsive ? (
@@ -54,9 +71,9 @@ const HeaderNav = ({ user }: HeaderNavProps) => {
         content={mailPopOverContent}
         placement="bottomRight"
         trigger="click"
-        title="Mail bildirimleri"
+        title="Sözleşmesi Biten Çalışanlar"
       >
-        <Badge count={5} color="red">
+        <Badge count={employees.length} color="red">
           <Icon
             icon={MailIcon}
             className="cursor-pointer"

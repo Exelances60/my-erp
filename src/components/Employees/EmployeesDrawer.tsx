@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Form,
   Input,
@@ -10,19 +10,19 @@ import {
   InputNumber,
   Upload,
   Button,
+  message,
 } from "antd";
-import ButtonForm from "../login/ButtonForm";
 import { useFormState } from "react-dom";
 import { UploadOutlined } from "@ant-design/icons";
 import locale from "antd/es/date-picker/locale/tr_TR";
 import "dayjs/locale/tr";
-import { SuccesMessage } from "@/hooks/FormStateSuccesMessage";
 import FormatForImage from "@/hooks/FormatForImage";
 import { CreateEmployees } from "@/actions/EmployeesActions/CreateEmployees";
 
 const { Option } = Select;
 
 const EmployeesDrawer = () => {
+  const [loading, setLoading] = useState(false);
   const { formatForImage, photoUrl } = FormatForImage();
   const [formState, action] = useFormState(
     CreateEmployees.bind(null, photoUrl),
@@ -30,11 +30,22 @@ const EmployeesDrawer = () => {
       errors: {},
     }
   );
-  SuccesMessage("Çalışan Başarıyla Eklendi", formState?.errors.success);
+  if (formState?.errors.success) {
+    message.success(" Çalışan Başarıyla Eklendi", 1);
+    setLoading ? setLoading(false) : null;
+    return (formState.errors.success = false);
+  }
 
   return (
     <div>
-      <Form layout="vertical" requiredMark onFinish={action}>
+      <Form
+        layout="vertical"
+        requiredMark
+        onFinish={(payload) => {
+          action(payload);
+          setLoading(true);
+        }}
+      >
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
@@ -150,7 +161,9 @@ const EmployeesDrawer = () => {
             </Upload>
           </Col>
         </Row>
-        <ButtonForm color="default">Kaydet</ButtonForm>
+        <Button htmlType="submit" className="mt-5 ml-5" loading={loading}>
+          Kayıt Et
+        </Button>
         <Button htmlType="reset" className="mt-5 ml-5">
           Reset
         </Button>

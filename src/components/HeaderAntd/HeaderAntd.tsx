@@ -10,23 +10,23 @@ import HeaderNav from "./HeaderNav";
 import { selectSetNavSider, useNavSiderStore } from "@/store/useNavSider";
 import { renderIcon } from "@/hooks/renderIcon";
 import NotPermmisonPage from "../NotPermmisonPage";
+import { Employee, NavMenu } from "@prisma/client";
 
 const { Header, Content, Footer, Sider } = Layout;
 
 interface HeaderAntdProps {
   children: React.ReactNode;
   user: fetchUserType;
-  navMenu: {
-    navid: string;
-    key: string;
-    title: string;
-    icon: string;
-    seeRoles: string;
-    url: string;
-  }[];
+  navMenu: NavMenu[];
+  employees: Employee[];
 }
 
-const HeaderAntd = ({ children, user, navMenu }: HeaderAntdProps) => {
+const HeaderAntd = ({
+  children,
+  user,
+  navMenu,
+  employees,
+}: HeaderAntdProps) => {
   const setUser = useUserStore(selectSetUser);
   const setNavMenu = useNavSiderStore(selectSetNavSider);
   const currentPage = usePathname()
@@ -108,7 +108,7 @@ const HeaderAntd = ({ children, user, navMenu }: HeaderAntdProps) => {
             style={{ padding: 0, backgroundColor: "#f9fafb" }}
             className="border  shadow"
           >
-            <HeaderNav user={user} />
+            <HeaderNav user={user} employees={employees} />
           </Header>
           <Content style={{ margin: "0px 16px 0" }}>
             <div className="w-full p-4 box-border min-h-[85vh] overflow-y-auto mt-[14px] bg-[#f9fafb]">

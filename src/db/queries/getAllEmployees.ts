@@ -1,14 +1,16 @@
 "use server";
 import { Employee } from "@prisma/client";
 import { cookies } from "next/headers";
+import { cache } from "react";
 import { db } from "@/db";
 
-type EmployeesResponse = {
+export type EmployeesResponse = {
   response: Employee[];
-  totalAmount: number;
+  totalAmount?: number;
+  overAgreement: Employee[];
 };
 
-export const getAllEmployees = async (): Promise<EmployeesResponse> => {
+export const getAllEmployees = cache(async (): Promise<EmployeesResponse> => {
   const userUid = cookies().get("uid")?.value;
   if (!userUid) {
     throw new Error("No user uid found");
@@ -22,5 +24,11 @@ export const getAllEmployees = async (): Promise<EmployeesResponse> => {
     return acc + curr.salary;
   }, 0);
 
-  return { response, totalAmount };
-};
+  const overAgreement = response.filter((employee) => {
+    const currentDay = new Date();
+    const agreementDate = new Date(employee.agreement);
+    return currentDay > agreementDate;
+  });
+
+  return { response, totalAmount, overAgreement };
+});
