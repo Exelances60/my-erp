@@ -26,6 +26,7 @@ model User {
  
   dashboardCards DashboardCard[] 
   employees Employee[] 
+  notifications Notification[]
 }
 
 model NavMenu{
@@ -67,6 +68,19 @@ model Employee {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt 
 
-
+  
   user      User     @relation(fields: [userUid], references: [uid], onDelete: Cascade)
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  EmployeeId Int?
+  title     String
+  message   String
+  photoUrl  String?
+  userUid   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  user     User     @relation(fields: [userUid], references: [uid], onDelete: Cascade)
 }

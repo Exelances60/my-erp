@@ -1,20 +1,21 @@
 import React from "react";
-import { Popover, Avatar, Badge } from "antd";
+import { Popover, Avatar, Badge, message } from "antd";
 import { Icon, TextInput } from "@tremor/react";
-import { MailIcon } from "@heroicons/react/outline";
+import { MailIcon, TrashIcon } from "@heroicons/react/outline";
 import { fetchUserType } from "@/db/queries/getUser";
 import { SearchIcon, UserIcon } from "@heroicons/react/solid";
 import { selectNavSider, useNavSiderStore } from "@/store/useNavSider";
 import { HeaderForm } from "../Header/HeaderForm";
-import { Employee } from "@prisma/client";
+import { Notification } from "@prisma/client";
+import { DeleteNotifaction } from "@/actions/DeleteNotifaction";
 interface HeaderNavProps {
   user: fetchUserType;
-  overAgreement: Employee[];
+  notifactionData: Notification[];
 }
 const userAvatarPopOverContent = (
   <>
     <div className="flex flex-col items-center gap-5 p-3 w-50 box-border">
-      <div className="flex items-center gap-2 ">
+      <div className="flex items-center gap-2  ">
         <Icon icon={UserIcon} variant="light" color="blue" size="md" />
         <h3 className="text-gray-500 text-lg font-semibold">Profil</h3>
       </div>
@@ -23,32 +24,51 @@ const userAvatarPopOverContent = (
   </>
 );
 
-const HeaderNav = ({ user, overAgreement }: HeaderNavProps) => {
+const HeaderNav = ({ user, notifactionData }: HeaderNavProps) => {
   const navSiderResponsive = useNavSiderStore(selectNavSider);
+  const deleteNotification = async (id: number) => {
+    message.loading("Siliniyor...", 0.5);
+    const resposne = await DeleteNotifaction(id);
+    if (resposne.status === 200) {
+      return message.success(resposne.message);
+    }
+    if (resposne.status === 404) {
+      return message.error(resposne.message);
+    }
+    if (resposne.status === 500) {
+      return message.error(resposne.message);
+    }
+  };
 
   const mailPopOverContent = (
     <div className="flex flex-col gap-2">
-      {overAgreement.map((employee) => {
-        return (
-          <div
-            key={employee.id}
-            className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer"
-          >
-            <Avatar
-              size={45}
-              className="cursor-pointer"
-              src={employee.photoUrl}
-            />
-            <div className="flex flex-col">
-              <h3 className="text-gray-500 text-lg font-semibold">
-                {employee.name}
+      {notifactionData.map((item) => (
+        <div
+          key={item.id}
+          className="flex items-center gap-2 p-1 box-border hover:bg-gray-100 ease-in duration-300 cursor-pointer"
+        >
+          <Avatar size={40} className="cursor-pointer" src={item.photoUrl} />
+          <div className="flex justify-between">
+            <div className="flex flex-col p-2">
+              <h3 className="text-red-300 text-lg font-semibold">
+                {item.title}
               </h3>
-              <p className="text-red-300">Sözleşmesi Bitmiş</p>
-              <p className="text-gray-500 text-sm">{employee.email}</p>
+              <p className="text-sm">{item.message}</p>
             </div>
           </div>
-        );
-      })}
+          <div className="flex items-center gap-2">
+            <Icon
+              icon={TrashIcon}
+              variant="light"
+              color="red"
+              size="sm"
+              onClick={deleteNotification.bind(null, item.id)}
+              className="cursor-pointer"
+              tooltip="Sil"
+            />
+          </div>
+        </div>
+      ))}
     </div>
   );
   return (
@@ -73,7 +93,7 @@ const HeaderNav = ({ user, overAgreement }: HeaderNavProps) => {
         trigger="click"
         title="Sözleşmesi Biten Çalışanlar"
       >
-        <Badge count={overAgreement.length} color="red">
+        <Badge color="red" count={notifactionData.length}>
           <Icon
             icon={MailIcon}
             className="cursor-pointer"

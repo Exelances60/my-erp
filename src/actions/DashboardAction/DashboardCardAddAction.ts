@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 interface DashboardCardAddStateProps {
   errors: {
     _form?: string[];
+    success?: boolean;
   };
 }
 export const DashboardCardAddAction = async (
@@ -36,6 +37,11 @@ export const DashboardCardAddAction = async (
         userUid: userUid || "",
       },
     });
+    return {
+      errors: {
+        success: true,
+      },
+    };
   } catch (error: any) {
     if (error.response) {
       return {

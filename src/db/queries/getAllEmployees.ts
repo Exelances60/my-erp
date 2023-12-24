@@ -7,7 +7,6 @@ import { db } from "@/db";
 export type EmployeesResponse = {
   response: Employee[];
   totalAmount?: number;
-  overAgreement: Employee[];
 };
 
 export const getAllEmployees = cache(async (): Promise<EmployeesResponse> => {
@@ -30,5 +29,35 @@ export const getAllEmployees = cache(async (): Promise<EmployeesResponse> => {
     return currentDay > agreementDate;
   });
 
-  return { response, totalAmount, overAgreement };
+  if (overAgreement.length > 0) {
+    const allReadyExistNotifaction = await db.notification.findMany({
+      where: {
+        userUid,
+      },
+    });
+
+    try {
+      overAgreement.forEach(async (employee) => {
+        if (
+          !allReadyExistNotifaction.find(
+            (notification) => notification.EmployeeId === employee.id
+          )
+        ) {
+          await db.notification.create({
+            data: {
+              EmployeeId: employee.id,
+              userUid,
+              photoUrl: employee.photoUrl,
+              title: "Çalışanın sözleşmesi bitmiş",
+              message: `${employee.name} ${employee.email} çalışanının sözleşmesi bitmiş`,
+            },
+          });
+        }
+      });
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  return { response, totalAmount };
 });

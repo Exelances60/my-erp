@@ -3,7 +3,7 @@ import { DashboardCardAddAction } from "@/actions/DashboardAction/DashboardCardA
 import ButtonForm from "@/components/login/ButtonForm";
 import { MenuListType } from "@/db/queries/getMenuList";
 import { iconOptions } from "@/hooks/renderIcon";
-import { Button, Form, Input, Select } from "antd";
+import { Button, Form, Input, Select, message } from "antd";
 import React, { useState } from "react";
 import { useFormState } from "react-dom";
 
@@ -13,6 +13,7 @@ interface IDashboardCardAdd {
 
 const DashboardCardAdd = ({ menuList }: IDashboardCardAdd) => {
   const [value, setValue] = useState("");
+  const [loading, setLoading] = useState(false);
   const formItems = [
     {
       label: "Açıklama",
@@ -26,6 +27,11 @@ const DashboardCardAdd = ({ menuList }: IDashboardCardAdd) => {
       errors: {},
     }
   );
+  if (formState?.errors.success) {
+    message.success("Kart Başarıyla Eklendi", 1);
+    setLoading ? setLoading(false) : null;
+    return (formState.errors.success = false);
+  }
 
   const menuTree = menuList?.map((item) => {
     return {
@@ -40,9 +46,11 @@ const DashboardCardAdd = ({ menuList }: IDashboardCardAdd) => {
       <Form
         name="addDashboardCard"
         layout="vertical"
-        size="large"
         className="w-full"
-        onFinish={action}
+        onFinish={(payload) => {
+          action(payload);
+          setLoading(true);
+        }}
       >
         <Form.Item name="title" label="Menü" className="w-full">
           <Select
@@ -100,13 +108,11 @@ const DashboardCardAdd = ({ menuList }: IDashboardCardAdd) => {
           </div>
         ) : null}
 
-        <Form.Item className="flex justify-center items-center ">
-          <ButtonForm color="success" size="lg">
-            Kart Ekle
-          </ButtonForm>
-          <Button htmlType="reset" type="dashed" className="ml-2" size="large">
-            Reset
+        <Form.Item className="flex justify-center items-center  ">
+          <Button htmlType="submit" className="mr-2" loading={loading}>
+            Ekle
           </Button>
+          <Button htmlType="reset">Reset</Button>
         </Form.Item>
       </Form>
     </div>

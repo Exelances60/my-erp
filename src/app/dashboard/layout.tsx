@@ -2,8 +2,8 @@ import HeaderAntd from "@/components/HeaderAntd/HeaderAntd";
 import { fetchUser } from "@/db/queries/getUser";
 import StyledComponentsRegistry from "@/lib/AntdRegistry";
 import { fetchMenuList } from "@/db/queries/getMenuList";
-import { getAllEmployees } from "@/db/queries/getAllEmployees";
 import { NavMenu } from "@prisma/client";
+import { getAllNotification } from "@/db/queries/getAllNotifacition";
 
 export default async function DashboardLayout({
   children,
@@ -12,11 +12,11 @@ export default async function DashboardLayout({
 }) {
   const user = await fetchUser();
   const navMenuFetch = fetchMenuList(user?.role) || [];
-  const employeesFetch = getAllEmployees();
+  const notiFactionFetch = getAllNotification();
 
-  const [navMenu, { overAgreement }] = await Promise.all([
+  const [navMenu, { response: notifactionData }] = await Promise.all([
     navMenuFetch,
-    employeesFetch,
+    notiFactionFetch,
   ]);
 
   return (
@@ -25,7 +25,7 @@ export default async function DashboardLayout({
         <HeaderAntd
           user={user}
           navMenu={navMenu as NavMenu[]}
-          overAgreement={overAgreement}
+          notifactionData={notifactionData}
         >
           {children}
         </HeaderAntd>
