@@ -63,6 +63,15 @@ const EmployeesContainer = ({ employees }: IEmployeeContainerProps) => {
       dataIndex: "email",
       key: "email",
       responsive: ["md"],
+      render: (value) => (
+        <div>
+          <Tooltip placement="top" title={value}>
+            <Tag color="cyan" className="w-40 overflow-hidden truncate">
+              {value}
+            </Tag>
+          </Tooltip>
+        </div>
+      ),
       width: 100,
     },
     {

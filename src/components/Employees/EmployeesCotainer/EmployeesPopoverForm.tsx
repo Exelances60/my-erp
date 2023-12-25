@@ -1,5 +1,5 @@
 import React from "react";
-import ButtonForm from "../login/ButtonForm";
+import ButtonForm from "../../login/ButtonForm";
 import dayjs from "dayjs";
 import locale from "antd/es/date-picker/locale/tr_TR";
 import "dayjs/locale/tr";

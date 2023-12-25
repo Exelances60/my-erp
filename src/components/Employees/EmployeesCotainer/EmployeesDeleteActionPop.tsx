@@ -1,7 +1,7 @@
 import React from "react";
 import { message } from "antd";
 import { Employee } from "@prisma/client";
-import ModalComp from "../ModalComp";
+import ModalComp from "../../ModalComp";
 import Image from "next/image";
 import { DeleteEmployees } from "@/actions/EmployeesActions/DeleteEmployees";
 

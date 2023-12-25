@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "antd";
 import { Employee } from "@prisma/client";
 import EmployeesPopoverForm from "./EmployeesPopoverForm";
-import ModalComp from "../ModalComp";
+import ModalComp from "../../ModalComp";
 import EmployeesDeleteActionPop from "./EmployeesDeleteActionPop";
 
 interface IEmployeeActionPopoverProps {

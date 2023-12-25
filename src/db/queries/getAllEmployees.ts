@@ -26,7 +26,8 @@ export const getAllEmployees = cache(async (): Promise<EmployeesResponse> => {
   const overAgreement = response.filter((employee) => {
     const currentDay = new Date();
     const agreementDate = new Date(employee.agreement);
-    return currentDay > agreementDate;
+
+    return agreementDate < currentDay;
   });
 
   if (overAgreement.length > 0) {
@@ -49,7 +50,7 @@ export const getAllEmployees = cache(async (): Promise<EmployeesResponse> => {
               userUid,
               photoUrl: employee.photoUrl,
               title: "Çalışanın sözleşmesi bitmiş",
-              message: `${employee.name} ${employee.email} çalışanının sözleşmesi bitmiş`,
+              message: `ID : ${employee.id}  ${employee.name}  ${employee.email} çalışanının sözleşmesi bitmiş`,
             },
           });
         }
@@ -81,4 +82,18 @@ export const calculatePrevMonthPercents = (
   ).toFixed(2);
 
   return { percentageIncrease, prevMountAmount };
+};
+
+export const calculatePrevMonthEmployees = (response: Employee[]) => {
+  const currentMonth = new Date().getMonth();
+  const prevMountAmountEmployee = response.filter((employee) => {
+    return employee.createdAt.getMonth() < currentMonth;
+  }).length;
+
+  const percentIncreaseEmployeeNumber = (
+    ((response.length - prevMountAmountEmployee) / prevMountAmountEmployee) *
+    100
+  ).toFixed(2);
+
+  return { percentIncreaseEmployeeNumber, prevMountAmountEmployee };
 };
