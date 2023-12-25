@@ -1,9 +1,10 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Card, Divider, Flex, Grid, Text } from "@tremor/react";
-import { Statistic } from "antd";
+import { Button, Statistic } from "antd";
 import { Employee } from "@prisma/client";
 import { BadgeDelta } from "@tremor/react";
+import { selectNavSider, useNavSiderStore } from "@/store/useNavSider";
 
 interface EmployeesCardsProps {
   totalAmount: number;
@@ -22,6 +23,9 @@ const EmployeesCards = ({
   percentageIncrease,
   percentIncreaseEmployeeNumber,
 }: EmployeesCardsProps) => {
+  const [changeEmployeeMode, setChangeEmployeeMode] = useState(false);
+  const navSider = useNavSiderStore(selectNavSider);
+
   const haveMostPaidEmployee = [...employees]
     .sort((a, b) => b.salary - a.salary)
     .slice(0, 3);
@@ -29,6 +33,11 @@ const EmployeesCards = ({
   const oldEmployee = [...employees]
     .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
     .slice(0, 3);
+
+  const newEmployee = [...employees]
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .slice(0, 3);
+
   const renderPercentageIncrease = (payload: string) => {
     if (Number(payload) > 0) {
       return <BadgeDelta className="ml-2">{payload} %</BadgeDelta>;
@@ -41,70 +50,101 @@ const EmployeesCards = ({
     }
   };
 
+  const renderEmployeeChange = () => {
+    if (changeEmployeeMode) {
+      return oldEmployee.map((item) => (
+        <div key={item.id} className="space-y-2 mt-2">
+          <Flex className="gap-2">
+            <Text>
+              ID : {item.id} {item.name}
+            </Text>
+            <Text className="text-red-400 text-lg">
+              {`${item.createdAt.toLocaleDateString()} `} Tarhinde İşe Başladı
+            </Text>
+          </Flex>
+        </div>
+      ));
+    } else {
+      return newEmployee.map((item) => (
+        <div key={item.id} className="space-y-2 mt-2 ">
+          <Flex className="gap-2" justifyContent="between">
+            <Text>
+              ID : {item.id} {item.name}
+            </Text>
+            <Text className="text-red-400 text-lg">
+              {`${item.createdAt.toLocaleDateString()} `} Tarhinde İşe Başladı
+            </Text>
+          </Flex>
+        </div>
+      ));
+    }
+  };
+
   return (
     <>
-      <Grid numItemsSm={2} numItemsLg={2} className="gap-6 mt-3">
-        <Card className="w-full flex flex-col justify-center min-h-fit">
-          <Flex alignItems="start">
-            <Text>Toplam Çalışan Ücretleri</Text>
-            {renderPercentageIncrease(percentageIncrease)}
-          </Flex>
-          <Flex
-            justifyContent="start"
-            alignItems="baseline"
-            className="truncate space-x-3"
-          >
-            <Statistic value={totalAmount} suffix="TL" precision={2} />
-            <Text className="truncate">from {prevMountAmount} </Text>
-          </Flex>
+      {!navSider ? (
+        <Grid numItemsSm={2} numItemsLg={2} className="gap-6 mt-3">
+          <Card className="w-full flex flex-col justify-center min-h-fit">
+            <Flex alignItems="start">
+              <Text>Toplam Çalışan Ücretleri</Text>
+              {renderPercentageIncrease(percentageIncrease)}
+            </Flex>
+            <Flex
+              justifyContent="start"
+              alignItems="baseline"
+              className="truncate space-x-3"
+            >
+              <Statistic value={totalAmount} suffix="TL" precision={2} />
+              <Text className="truncate">from {prevMountAmount} </Text>
+            </Flex>
 
-          <Divider />
-          <h1 className="text-xl">En Çok Maaş alan isimler</h1>
-          {haveMostPaidEmployee.map((item) => (
-            <div key={item.id} className="space-y-2 mt-2">
-              <Flex className="gap-2">
-                <Text>{item.name} </Text>
-                <Text className="text-red-400">{`${item.salary} TL `}</Text>
-              </Flex>
-            </div>
-          ))}
-        </Card>
+            <Divider />
+            <h1 className="text-xl">En Çok Maaş alan isimler</h1>
+            {haveMostPaidEmployee.map((item) => (
+              <div key={item.id} className="space-y-2 mt-2">
+                <Flex className="gap-2">
+                  <Text>{item.name} </Text>
+                  <Text className="text-red-400">{`${item.salary} TL `}</Text>
+                </Flex>
+              </div>
+            ))}
+          </Card>
 
-        <Card className="w-full flex flex-col items-center min-h-fit ">
-          <Flex alignItems="start">
-            <Text>Toplam Çalışan Sayısı</Text>
-            {renderPercentageIncrease(percentIncreaseEmployeeNumber)}
-          </Flex>
-          <Flex
-            justifyContent="start"
-            alignItems="baseline"
-            className="truncate space-x-3"
-          >
-            <Statistic value={employees.length} />
-            <Text className="truncate">from {prevMountAmountEmployee} </Text>
-          </Flex>
-          <Divider />
-          <Flex
-            justifyContent="end"
-            alignItems="baseline"
-            className="truncate space-x-3"
-          >
-            <Text>En Eski Çalışanlar</Text>
-          </Flex>
-
-          {oldEmployee.map((item) => (
-            <div key={item.id} className="space-y-2 mt-2">
-              <Flex className="gap-2">
-                <Text>{item.name} </Text>
-                <Text className="text-red-400 text-lg">
-                  {`${item.createdAt.toLocaleDateString()} `} Tarhinde İşe
-                  Başladı
-                </Text>
-              </Flex>
-            </div>
-          ))}
-        </Card>
-      </Grid>
+          <Card className="w-full flex flex-col items-center  min-h-fit ">
+            <Flex alignItems="start">
+              <Text>Toplam Çalışan Sayısı</Text>
+              {renderPercentageIncrease(percentIncreaseEmployeeNumber)}
+            </Flex>
+            <Flex
+              justifyContent="start"
+              alignItems="baseline"
+              className="truncate space-x-3"
+            >
+              <Statistic value={employees.length} />
+              <Text className="truncate">from {prevMountAmountEmployee} </Text>
+            </Flex>
+            <Divider />
+            <Flex
+              justifyContent="end"
+              alignItems="baseline"
+              className="truncate space-x-3"
+            >
+              {changeEmployeeMode ? (
+                <Text className="truncate">En Eski Çalışanlar</Text>
+              ) : (
+                <Text className="truncate">En Yeni Çalışanlar</Text>
+              )}
+              <Button
+                size="small"
+                onClick={() => setChangeEmployeeMode(!changeEmployeeMode)}
+              >
+                Degiştir
+              </Button>
+            </Flex>
+            {renderEmployeeChange()}
+          </Card>
+        </Grid>
+      ) : null}
     </>
   );
 };

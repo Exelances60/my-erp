@@ -5,6 +5,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/es/table";
 import EmployeesActionPopover from "./EmployeesActionPopover";
+import { selectNavSider, useNavSiderStore } from "@/store/useNavSider";
 
 interface IEmployeeContainerProps {
   employees: Employee[];
@@ -12,6 +13,7 @@ interface IEmployeeContainerProps {
 
 const EmployeesContainer = ({ employees }: IEmployeeContainerProps) => {
   const [filterName, setFilterName] = useState<string>("");
+  const navSider = useNavSiderStore(selectNavSider);
   const [selectedRowKeys, setSelectedRowKeys] = useState<Employee[]>([]);
 
   const columns: ColumnsType<Employee> = [
@@ -19,7 +21,6 @@ const EmployeesContainer = ({ employees }: IEmployeeContainerProps) => {
       title: "ID",
       dataIndex: "id",
       key: "id",
-      responsive: ["md"],
       width: 50,
       sorter: (a, b) => a.id - b.id,
     },
@@ -28,6 +29,7 @@ const EmployeesContainer = ({ employees }: IEmployeeContainerProps) => {
       dataIndex: "name",
       key: "name",
       width: 100,
+      responsive: ["md"],
       filterDropdown: () => (
         <div className="p-4">
           <Input.Search
@@ -78,7 +80,7 @@ const EmployeesContainer = ({ employees }: IEmployeeContainerProps) => {
       title: "Phone",
       dataIndex: "phone",
       key: "phone",
-      width: 100,
+      width: 50,
     },
     {
       title: "Role",
@@ -101,7 +103,7 @@ const EmployeesContainer = ({ employees }: IEmployeeContainerProps) => {
       dataIndex: "address",
       key: "address",
       width: 200,
-      responsive: ["md"],
+      responsive: navSider ? ["lg"] : ["md"],
     },
     {
       title: "Salary",
@@ -114,13 +116,14 @@ const EmployeesContainer = ({ employees }: IEmployeeContainerProps) => {
           </Tooltip>
         </div>
       ),
-      responsive: ["md"],
+      responsive: navSider ? ["lg"] : ["md"],
       width: 100,
     },
     {
       width: 30,
       title: "Action",
       key: "action",
+      responsive: navSider ? ["lg"] : undefined,
       render: (text: string, value) => (
         <Space size="middle">
           <Popover
@@ -139,18 +142,20 @@ const EmployeesContainer = ({ employees }: IEmployeeContainerProps) => {
 
   return (
     <div>
-      <Table
-        rowSelection={{
-          type: "checkbox",
-          onChange(selectedRowKeys, selectedRows, info) {
-            setSelectedRowKeys(selectedRows);
-          },
-        }}
-        rowKey={(record) => record.id}
-        columns={columns}
-        dataSource={employees}
-        pagination={{ defaultPageSize: 5 }}
-      />
+      {!navSider ? (
+        <Table
+          rowSelection={{
+            type: "checkbox",
+            onChange(selectedRowKeys, selectedRows, info) {
+              setSelectedRowKeys(selectedRows);
+            },
+          }}
+          rowKey={(record) => record.id}
+          columns={columns}
+          dataSource={employees}
+          pagination={{ defaultPageSize: 5 }}
+        />
+      ) : null}
     </div>
   );
 };
