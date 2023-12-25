@@ -122,7 +122,7 @@ const HeaderAntd = ({
               {children}
             </div>
           </Content>
-          <Footer style={{ textAlign: "center" }}>Desing with Enes</Footer>
+          <Footer style={{ textAlign: "center" }}>Desing by Enes</Footer>
         </Layout>
       </Layout>
     </>

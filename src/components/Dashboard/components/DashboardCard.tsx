@@ -39,6 +39,18 @@ const DashboardCard = ({
     setEditableTextCard(value);
     DashboardCardAction(value, uniqueKey);
   };
+  const renderLastProcees = () => {
+    switch (title) {
+      case "Personel" || "Çalışan":
+        return <Text> Enes Mahmut</Text>;
+      case "Son İşlem Tarihi":
+        return <Text> {detailsText}</Text>;
+      case "Son İşlem Tutarı":
+        return <Text> {detailsText}</Text>;
+      default:
+        return null;
+    }
+  };
 
   return (
     <Card>
@@ -48,7 +60,7 @@ const DashboardCard = ({
       <Paragraph
         className="flex items-center gap-1"
         editable={
-          user?.role === "admin"
+          user?.role === "admin" || "owner"
             ? {
                 onChange: handleTitleChange,
                 tooltip: "Düzenle",
@@ -60,7 +72,7 @@ const DashboardCard = ({
       </Paragraph>
       <Paragraph
         editable={
-          user?.role === "admin"
+          user?.role === "admin" || "owner"
             ? {
                 onChange: handleChangeText,
                 tooltip: "Düzenle",
@@ -70,9 +82,12 @@ const DashboardCard = ({
       >
         {editableTextCard}
       </Paragraph>
+      {renderLastProcees()}
+      <br />
       <Link href={path}>
         İlgili sayfaya gitmek için{<ArrowRightIcon className="w-5 h-5" />}
       </Link>
+
       <Text className="mt-2">Düzenleyen: {user?.name}</Text>
     </Card>
   );

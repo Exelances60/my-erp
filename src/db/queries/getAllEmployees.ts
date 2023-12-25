@@ -61,3 +61,24 @@ export const getAllEmployees = cache(async (): Promise<EmployeesResponse> => {
 
   return { response, totalAmount };
 });
+
+export const calculatePrevMonthPercents = (
+  response: Employee[],
+  totalAmount: number
+) => {
+  const currentMonth = new Date().getMonth();
+  const prevMountAmount = response
+    .filter((employee) => {
+      return employee.createdAt.getMonth() < currentMonth;
+    })
+    .reduce((acc, curr) => {
+      return acc + curr.salary;
+    }, 0);
+
+  const percentageIncrease = (
+    ((totalAmount - prevMountAmount) / prevMountAmount) *
+    100
+  ).toFixed(2);
+
+  return { percentageIncrease, prevMountAmount };
+};
