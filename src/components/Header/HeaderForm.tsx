@@ -4,7 +4,6 @@ import { signOutAction } from "@/actions/SignOutAction";
 import { LogoutOutlined } from "@ant-design/icons";
 export const HeaderForm = ({
   size,
-
   color,
 }: {
   size?: "sm" | "md" | "lg";
@@ -19,7 +18,7 @@ export const HeaderForm = ({
   return (
     <>
       <form action={signOutAction}>
-        <ButtonForm color={color} size={size} icon={<LogoutOutlined />}>
+        <ButtonForm color={color} icon={<LogoutOutlined />}>
           Çıkış Yap
         </ButtonForm>
       </form>

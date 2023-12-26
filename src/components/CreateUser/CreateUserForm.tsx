@@ -87,9 +87,7 @@ const CreateUserForm = () => {
           </div>
         ) : null}
 
-        <ButtonForm color="danger" size="lg">
-          Oluştur
-        </ButtonForm>
+        <ButtonForm color="danger">Oluştur</ButtonForm>
 
         <Button htmlType="reset" size="large" className="mt-5">
           Reset
