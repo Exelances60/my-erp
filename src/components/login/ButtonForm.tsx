@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { Button } from "antd";
-import { useFormStatus } from "react-dom";
 
 type ButtonColor =
   | "danger"
@@ -15,16 +14,14 @@ type ButtonColor =
 const ButtonForm = ({
   children,
   color,
-  size,
   icon,
+  loading,
 }: {
   children: React.ReactNode;
   color: ButtonColor;
-  size?: "sm" | "md" | "lg";
+  loading?: boolean;
   icon?: React.ReactNode;
 }) => {
-  const { pending } = useFormStatus();
-
   return (
     <>
       <Button
@@ -32,8 +29,8 @@ const ButtonForm = ({
         htmlType="submit"
         type="primary"
         size="large"
+        loading={loading}
         className="bg-blue-500 hover:bg-blue-700"
-        loading={pending}
         icon={icon}
       >
         {children}

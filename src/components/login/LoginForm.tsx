@@ -1,16 +1,31 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ButtonForm from "@/components/login/ButtonForm";
 import { useFormState } from "react-dom";
 import { LoginFormAction } from "@/actions/LoginFormAction";
 import { Input } from "antd";
 import { Form } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
+import { ExclamationIcon } from "@heroicons/react/solid";
+import { Callout } from "@tremor/react";
 
 const LoginForm = () => {
+  const [loading, setLoading] = useState(false);
   const [formState, action] = useFormState(LoginFormAction, {
     errors: {},
   });
+
+  useEffect(() => {
+    if (
+      formState?.errors._form ||
+      formState?.errors.email ||
+      formState?.errors.password ||
+      formState?.errors._form
+    ) {
+      setLoading(false);
+    }
+  }, [formState?.errors]);
+
   return (
     <>
       <h3 className="text-xl font-bold text-center ">Giriş Yap</h3>
@@ -19,7 +34,10 @@ const LoginForm = () => {
         layout="vertical"
         component={"form"}
         initialValues={{ remember: true }}
-        onFinish={action}
+        onFinish={(payload) => {
+          action(payload);
+          setLoading(true);
+        }}
       >
         <Form.Item
           name="email"
@@ -71,12 +89,19 @@ const LoginForm = () => {
           />
         </Form.Item>
         {formState?.errors._form ? (
-          <div className="border rounded-md bg-red-200 p-2 my-4">
-            {formState?.errors._form}
-          </div>
+          <>
+            <Callout
+              className="my-2"
+              icon={ExclamationIcon}
+              title="Hata"
+              color="rose"
+            >
+              {formState?.errors._form}
+            </Callout>
+          </>
         ) : null}
         <Form.Item className="flex justify-center items-center">
-          <ButtonForm color="success" size="lg">
+          <ButtonForm color="success" loading={loading}>
             Giriş Yap
           </ButtonForm>
         </Form.Item>
