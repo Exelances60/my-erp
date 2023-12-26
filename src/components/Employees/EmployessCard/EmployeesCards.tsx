@@ -76,7 +76,7 @@ const EmployeesCards = ({
             </Flex>
 
             <Divider />
-            <h1 className="text-xl">En Çok Maaş alan isimler</h1>
+            <h1 className="text-xl">En çok maaş alan isimler</h1>
             {haveMostPaidEmployee.map((item) => (
               <div key={item.id} className="space-y-2 mt-2">
                 <Flex className="gap-2">

@@ -37,7 +37,11 @@ export const renderEmployeeChange = (
 
 export const renderPercentageIncrease = (payload: string) => {
   if (Number(payload) > 0) {
-    return <BadgeDelta className="ml-2">{payload} %</BadgeDelta>;
+    return (
+      <BadgeDelta className="ml-2">
+        {Number(payload) === Infinity ? "Geçmiş Aya Ayıt Kayıt Yok" : payload} %
+      </BadgeDelta>
+    );
   } else {
     return (
       <BadgeDelta className="ml-2" deltaType="decrease">
