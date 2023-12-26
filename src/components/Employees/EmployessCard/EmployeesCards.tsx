@@ -3,8 +3,12 @@ import React, { useState } from "react";
 import { Card, Divider, Flex, Grid, Text } from "@tremor/react";
 import { Button, Statistic } from "antd";
 import { Employee } from "@prisma/client";
-import { BadgeDelta } from "@tremor/react";
 import { selectNavSider, useNavSiderStore } from "@/store/useNavSider";
+import { selectFilterDate, useEmployeesStore } from "@/store/useEmployees";
+import {
+  renderEmployeeChange,
+  renderPercentageIncrease,
+} from "@/hooks/Employees/RenderEmployeeChange";
 
 interface EmployeesCardsProps {
   totalAmount: number;
@@ -16,7 +20,6 @@ interface EmployeesCardsProps {
 }
 
 const EmployeesCards = ({
-  totalAmount,
   prevMountAmount,
   prevMountAmountEmployee,
   employees,
@@ -25,6 +28,7 @@ const EmployeesCards = ({
 }: EmployeesCardsProps) => {
   const [changeEmployeeMode, setChangeEmployeeMode] = useState(false);
   const navSider = useNavSiderStore(selectNavSider);
+  const filterDate = useEmployeesStore(selectFilterDate);
 
   const haveMostPaidEmployee = [...employees]
     .sort((a, b) => b.salary - a.salary)
@@ -38,47 +42,20 @@ const EmployeesCards = ({
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
     .slice(0, 3);
 
-  const renderPercentageIncrease = (payload: string) => {
-    if (Number(payload) > 0) {
-      return <BadgeDelta className="ml-2">{payload} %</BadgeDelta>;
-    } else {
-      return (
-        <BadgeDelta className="ml-2" deltaType="decrease">
-          {payload} %
-        </BadgeDelta>
-      );
-    }
-  };
-
-  const renderEmployeeChange = () => {
-    if (changeEmployeeMode) {
-      return oldEmployee.map((item) => (
-        <div key={item.id} className="space-y-2 mt-2">
-          <Flex className="gap-2">
-            <Text>
-              ID : {item.id} {item.name}
-            </Text>
-            <Text className="text-red-400 text-lg">
-              {`${item.createdAt.toLocaleDateString()} `} Tarhinde İşe Başladı
-            </Text>
-          </Flex>
-        </div>
-      ));
-    } else {
-      return newEmployee.map((item) => (
-        <div key={item.id} className="space-y-2 mt-2 ">
-          <Flex className="gap-2" justifyContent="between">
-            <Text>
-              ID : {item.id} {item.name}
-            </Text>
-            <Text className="text-red-400 text-lg">
-              {`${item.createdAt.toLocaleDateString()} `} Tarhinde İşe Başladı
-            </Text>
-          </Flex>
-        </div>
-      ));
-    }
-  };
+  const employeesFilter = employees
+    .filter((employee) => {
+      if (filterDate.from && filterDate.to) {
+        return (
+          new Date(employee.createdAt) >= filterDate.from &&
+          new Date(employee.createdAt) <= filterDate.to
+        );
+      } else {
+        return employee;
+      }
+    })
+    .reduce((acc, curr) => {
+      return acc + curr.salary;
+    }, 0);
 
   return (
     <>
@@ -94,7 +71,7 @@ const EmployeesCards = ({
               alignItems="baseline"
               className="truncate space-x-3"
             >
-              <Statistic value={totalAmount} suffix="TL" precision={2} />
+              <Statistic value={employeesFilter} suffix="TL" precision={2} />
               <Text className="truncate">from {prevMountAmount} </Text>
             </Flex>
 
@@ -141,7 +118,7 @@ const EmployeesCards = ({
                 Degiştir
               </Button>
             </Flex>
-            {renderEmployeeChange()}
+            {renderEmployeeChange(changeEmployeeMode, oldEmployee, newEmployee)}
           </Card>
         </Grid>
       ) : null}

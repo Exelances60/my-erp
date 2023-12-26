@@ -2,10 +2,13 @@
 import { Employee } from "@prisma/client";
 import { Table, Input, Space, Tag, Image, Popover, Tooltip } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ColumnsType } from "antd/es/table";
 import EmployeesActionPopover from "./EmployeesActionPopover";
 import { selectNavSider, useNavSiderStore } from "@/store/useNavSider";
+import { DateRangePicker, DateRangePickerValue } from "@tremor/react";
+import tr from "date-fns/locale/tr";
+import { selectSetFilterDate, useEmployeesStore } from "@/store/useEmployees";
 
 interface IEmployeeContainerProps {
   employees: Employee[];
@@ -14,7 +17,27 @@ interface IEmployeeContainerProps {
 const EmployeesContainer = ({ employees }: IEmployeeContainerProps) => {
   const [filterName, setFilterName] = useState<string>("");
   const navSider = useNavSiderStore(selectNavSider);
+  const setFilterDate = useEmployeesStore(selectSetFilterDate);
   const [selectedRowKeys, setSelectedRowKeys] = useState<Employee[]>([]);
+  const [value, setValue] = useState<DateRangePickerValue>({
+    from: undefined,
+    to: undefined,
+  });
+
+  useEffect(() => {
+    setFilterDate(value);
+  }, [value, setFilterDate]);
+
+  employees = employees.filter((employee) => {
+    if (value.from && value.to) {
+      return (
+        new Date(employee.createdAt) >= value.from &&
+        new Date(employee.createdAt) <= value.to
+      );
+    } else {
+      return employee;
+    }
+  });
 
   const columns: ColumnsType<Employee> = [
     {
@@ -142,6 +165,16 @@ const EmployeesContainer = ({ employees }: IEmployeeContainerProps) => {
 
   return (
     <div>
+      <DateRangePicker
+        value={value}
+        className="mb-4"
+        onValueChange={setValue}
+        locale={tr}
+        placeholder="Filtrelemek için tarih seçiniz"
+        selectPlaceholder="Filtre Seçiniz"
+        color="rose"
+      ></DateRangePicker>
+
       {!navSider ? (
         <Table
           rowSelection={{
