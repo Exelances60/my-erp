@@ -27,7 +27,7 @@ const DashboardShortCurtCard = async () => {
         <Text>Toplam Çalışan Sayısı</Text>
         <Metric>{response.length}</Metric>
         <Flex className="mt-4">
-          <Text className="truncate">4</Text>
+          <Text className="truncate">{response.length}</Text>
           <Text></Text>
         </Flex>
 
