@@ -140,6 +140,7 @@ const EmployeesContainer = ({ employees }: IEmployeeContainerProps) => {
         </div>
       ),
       responsive: navSider ? ["lg"] : ["md"],
+      sorter: (a, b) => a.salary - b.salary,
       width: 100,
     },
     {
