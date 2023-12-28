@@ -87,7 +87,7 @@ const EmployeesCards = ({
             ))}
           </Card>
 
-          <Card className="w-full flex flex-col items-center  min-h-fit ">
+          <Card className="w-full flex flex-col   min-h-fit ">
             <Flex alignItems="start">
               <Text>Toplam Çalışan Sayısı</Text>
               {renderPercentageIncrease(percentIncreaseEmployeeNumber)}
@@ -101,11 +101,7 @@ const EmployeesCards = ({
               <Text className="truncate">from {prevMountAmountEmployee} </Text>
             </Flex>
             <Divider />
-            <Flex
-              justifyContent="end"
-              alignItems="baseline"
-              className="truncate space-x-3"
-            >
+            <Flex className="truncate space-x-3">
               {changeEmployeeMode ? (
                 <Text className="truncate">En Eski Çalışanlar</Text>
               ) : (

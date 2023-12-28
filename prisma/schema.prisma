@@ -27,6 +27,7 @@ model User {
   dashboardCards DashboardCard[] 
   employees Employee[] 
   notifications Notification[]
+  allAgreements AllAgreement[]
 }
 
 model NavMenu{
@@ -69,6 +70,7 @@ model Employee {
   updatedAt DateTime @updatedAt 
 
   
+  AllAgreement AllAgreement[]
   user      User     @relation(fields: [userUid], references: [uid], onDelete: Cascade)
 }
 
@@ -83,4 +85,34 @@ model Notification {
   updatedAt DateTime @updatedAt
   
   user     User     @relation(fields: [userUid], references: [uid], onDelete: Cascade)
+}
+
+model AllAgreement{
+  id        Int      @id @default(autoincrement())
+  EmployeeId Int?
+  title     String
+  message   String
+  photoUrl  String?
+  link      String?
+  userUid   String
+
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+
+  user     User     @relation(fields: [userUid], references: [uid], onDelete: Cascade)
+  employee Employee? @relation(fields: [EmployeeId], references: [id], onDelete: Cascade)
+}
+
+model AllSalary{
+  id       Int      @id @default(autoincrement())
+  title   String
+  month   String
+
+  currentSalary Int
+  previousSalary Int?
+  targetSalary Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
