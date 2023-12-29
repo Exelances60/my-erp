@@ -8,7 +8,10 @@ import {
 
 const AllAgreement = () => {
   return (
-    <div className="p-4 box-border h-[80vh]">
+    <div
+      className="p-4 box-border h-[80vh]"
+      key={`04f55846-7edb-416f-8034-14ad6db88b73`}
+    >
       <AccordionList className="w-full">
         <Accordion>
           <AccordionHeader>Accordion 1</AccordionHeader>
